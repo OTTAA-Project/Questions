@@ -99,10 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.btn_mic) {
             //morePressed = 0;
             //loadMore(false);
-            //TODO habilitar startSpeechToText cuando pueda probar
-//            startSpeechToText();
-            processText("Queres comer?");
-
+            startSpeechToText();
 
 //          Bundle bundle = new Bundle();
 //          bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Question");
