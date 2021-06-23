@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.InputDevice;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 
 //First push
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, TextToSpeech.OnInitListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, TextToSpeech.OnInitListener, View.OnTouchListener {
 
     private static final String TAG = "MainActivity";
 
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView txtOutput;
     private Picto Picto1, Picto2, Picto3, Picto4;
+    private Button TouchButton;
 
     private String mStrIdioma;
 
@@ -175,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Picto3.setOnClickListener(this);
         Picto4 = findViewById(R.id.picto4);
         Picto4.setOnClickListener(this);
+        TouchButton = findViewById(R.id.btnBarrido);
+        TouchButton.setOnTouchListener(this);
         btnMicrophone.setOnClickListener(this);
         btnMorePictos.setOnClickListener(this);
 
@@ -192,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         listPictos.add(Picto1);
         listPictos.add(Picto2);
+
 
         mStrIdioma = Locale.getDefault().getLanguage();
     }
@@ -331,5 +338,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Log.d(TAG, "updateUI: User Logged in" );
         }
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getSource() == InputDevice.SOURCE_MOUSE) {
+            switch (event.getButtonState()) {
+                case MotionEvent.BUTTON_PRIMARY:
+                    Log.e(TAG, "onTouchEvent: Primary Button");
+                   Picto1.callOnClick();
+                    return true;
+                case MotionEvent.BUTTON_SECONDARY:
+                    Log.e(TAG, "onTouchEvent: Secundary Button");
+                   Picto4.callOnClick();
+                    return true;
+                case MotionEvent.BUTTON_TERTIARY:
+                    Log.e(TAG, "onTouchEvent: Tertiary Button");
+                    Picto4.callOnClick();
+                    return true;
+                case MotionEvent.AXIS_HAT_Y :
+                    return true;
+
+            }
+        return false;
+        }
+        return false;
     }
 }

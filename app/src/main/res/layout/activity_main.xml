@@ -14,12 +14,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/picto1"
+        app:layout_constraintBottom_toTopOf="@id/ButtonsContainer"
         android:layout_marginTop="15dp"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="normal"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/ButtonsContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_output"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"
+        >
     <com.stonefacesoft.questions.utils.Picto
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -28,7 +38,7 @@
         android:id="@+id/picto1"
         app:Texto="Hola"
         app:Color="4"
-        app:layout_constraintTop_toBottomOf="@+id/txt_output"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/picto2"
         app:layout_constraintBottom_toTopOf="@id/picto3"/>
@@ -40,7 +50,7 @@
         android:id="@+id/picto2"
         app:Texto="Hola"
         app:Color="2"
-        app:layout_constraintTop_toBottomOf="@id/txt_output"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/picto1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/picto4"/>
@@ -55,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@id/picto1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/picto4"
-        app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.stonefacesoft.questions.utils.Picto
         android:layout_width="0dp"
@@ -67,13 +77,24 @@
         app:layout_constraintTop_toBottomOf="@id/picto2"
         app:layout_constraintStart_toEndOf="@id/picto3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+        android:id="@+id/btnBarrido"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@android:color/transparent"
+        />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.stonefacesoft.questions.utils.MovableFloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayoutButtons"
-        app:layout_constraintTop_toBottomOf="@id/picto3"
+        app:layout_constraintTop_toBottomOf="@id/ButtonsContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/text_googleapi"
