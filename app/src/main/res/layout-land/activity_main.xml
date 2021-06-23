@@ -20,7 +20,8 @@
         android:layout_marginTop="15dp"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:textStyle="normal" />
+        android:textStyle="normal"
+        />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -30,6 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"
+        android:layout_marginBottom="15dp"
         >
         <LinearLayout
             android:layout_width="0dp"
@@ -40,7 +42,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_weight="4"
         >
 
         <com.stonefacesoft.questions.utils.Picto
@@ -52,8 +53,6 @@
             android:id="@+id/picto1"
             custom:Texto="Hola"
             custom:Color="4"/>
-
-
         <com.stonefacesoft.questions.utils.Picto
             android:layout_width="0dp"
             android:layout_height="match_parent"
