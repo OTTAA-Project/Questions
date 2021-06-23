@@ -28,7 +28,6 @@
         android:id="@+id/ButtonsContainer"
         app:layout_constraintTop_toBottomOf="@+id/txt_output"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"
         android:layout_marginBottom="15dp"
