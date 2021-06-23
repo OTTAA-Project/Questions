@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Questions</string>
+    <string name="str_MakeAQuestion">Haz una pregunta…</string>
+    <string name="tts_error_language">Lenguaje No Soportado</string>
+    <string name="init_faile">El motor de voz no pudo ser inicializado</string>
+    <string name="toca_aca_para_hacer_una_pregunta">Toca el botón verde para hacer una pregunta</string>
+    <string name="str_WhatDidYouSay">¿Cómo dijiste?</string>
+    <string name="str_DidNotUnderstand">¿No te entendí, podés repetir?</string>
+    <string name="str_PleaseReformulate">Por favor, formulá una pregunta del tipo SI / NO</string>
+    <string name="str_CanYouSayItAgain">¿Puedes decirlo otra vez?</string>
+
+</resources>

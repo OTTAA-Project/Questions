@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/txt_output"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/picto1"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="normal"/>
+
+    <com.stonefacesoft.questions.utils.Picto
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:onClick="onClick"
+        android:id="@+id/picto1"
+        app:Texto="Hola"
+        app:Color="4"
+        app:layout_constraintTop_toBottomOf="@+id/txt_output"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/picto2"
+        app:layout_constraintBottom_toTopOf="@id/picto3"/>
+
+    <com.stonefacesoft.questions.utils.Picto
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:id="@+id/picto2"
+        app:Texto="Hola"
+        app:Color="2"
+        app:layout_constraintTop_toBottomOf="@id/txt_output"
+        app:layout_constraintStart_toEndOf="@id/picto1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/picto4"/>
+
+    <com.stonefacesoft.questions.utils.Picto
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:id="@+id/picto3"
+        app:Texto="Hola"
+        app:Color="2"
+        app:layout_constraintTop_toBottomOf="@id/picto1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/picto4"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"/>
+
+    <com.stonefacesoft.questions.utils.Picto
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:id="@+id/picto4"
+        app:Texto="Hola"
+        app:Color="2"
+        app:layout_constraintTop_toBottomOf="@id/picto2"
+        app:layout_constraintStart_toEndOf="@id/picto3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"/>
+
+    <com.stonefacesoft.questions.utils.MovableFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutButtons"
+        app:layout_constraintTop_toBottomOf="@id/picto3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/text_googleapi"
+        android:background="@drawable/movable_button_rigth"
+        android:padding="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/place_holder"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin = "6dp"
+            android:src="@drawable/ic_reorder_black_24dp"
+            android:contentDescription=" "
+            android:layout_gravity="center"
+            app:tint="@color/purple_700" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_more"
+            android:visibility="gone"
+            android:backgroundTint="@color/purple_500"
+            android:layout_margin="6dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:fabSize="normal"
+            android:src="@drawable/ic_photo_library_black_24dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_mic"
+            android:backgroundTint="@color/teal_200"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin = "6dp"
+            app:fabSize="normal"
+            android:src="@drawable/ic_mic_black_24dp" />
+
+    </com.stonefacesoft.questions.utils.MovableFloatingActionButton>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/text_googleapi"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/toca_aca_para_hacer_una_pregunta"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="normal" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
