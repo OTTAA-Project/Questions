@@ -9,6 +9,7 @@ import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.InputDevice;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,11 +19,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.stonefacesoft.pictogramslibrary.view.PictoView;
 import com.stonefacesoft.questions.utils.MovableFloatingActionButton;
-import com.stonefacesoft.questions.utils.Picto;
+//import com.stonefacesoft.questions.utils.RequestTask;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -31,27 +35,22 @@ import java.util.Locale;
 
 //First push
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, TextToSpeech.OnInitListener, View.OnTouchListener {
-
     public final static int SPEECH_RECOGNITION_CODE = 199;
     private static final String TAG = "MainActivity";
     TextToSpeech tts;
-    ArrayList<Picto> listPictos, emptyList;
+    ArrayList<PictoView> listPictos, emptyList;
     private FirebaseAuth mAuth;
     private FirebaseAnalytics mFirebaseAnalytics;
     private FloatingActionButton btnMorePictos, btnMicrophone;
     private MovableFloatingActionButton btnMovable;
     private TextView txtOutput;
-    private Picto Picto1, Picto2, Picto3, Picto4;
+    private PictoView Picto1, Picto2, Picto3, Picto4;
     private Button TouchButton;
     private String mStrIdioma;
+    private YesNoQuestions yesNoQuestions;
     private final boolean mute = false;
 
-    public static String stripAccents(String s) {
-        s = s.toLowerCase();
-        s = Normalizer.normalize(s, Normalizer.Form.NFD);
-        s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
-        return s;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +58,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         tts = new TextToSpeech(MainActivity.this, this);
-
+        yesNoQuestions = new YesNoQuestions();
         mAuth = FirebaseAuth.getInstance();
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        listPictos = new ArrayList<Picto>();
-        emptyList = new ArrayList<Picto>();
+        listPictos = new ArrayList<PictoView>();
+        emptyList = new ArrayList<PictoView>();
         UIbinding();
 
     }
@@ -84,22 +82,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getSource() == InputDevice.SOURCE_MOUSE) {
+            Picto4.callOnClick();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void onClick(View view) {
 
         int id = view.getId();
         if (id == R.id.picto1) {
-            speak(Picto1.getText());
+            speak(Picto1.getCustom_Texto());
         } else if (id == R.id.picto2) {
-            speak(Picto2.getText());
+            speak(Picto2.getCustom_Texto());
         } else if (id == R.id.picto3) {
-            speak(Picto3.getText());
+            speak(Picto3.getCustom_Texto());
         } else if (id == R.id.picto4) {
-            speak(Picto4.getText());
+            speak(Picto4.getCustom_Texto());
         } else if (id == R.id.btn_mic) {
             //morePressed = 0;
             //loadMore(false);
             startSpeechToText();
-
 //          Bundle bundle = new Bundle();
 //          bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Question");
 //          mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
@@ -155,10 +161,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void processText(String text) {
         txtOutput.setText(text);
-        if (esSiNo(text)) {
+        if (YesNoQuestions.esSiNo(text)) {
             loadPictos(listPictos);
         } else {
-            loadPictos(emptyList);
+          //  QueryInput queryInput = QueryInput.newBuilder().setText(TextInput.newBuilder().setText(text).setLanguageCode(mStrIdioma)).build();
+          //  loadPictos(emptyList);
         }
     }
 
@@ -186,18 +193,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Picto3.setVisibility(View.INVISIBLE);
         Picto4.setVisibility(View.INVISIBLE);
 
-        Picto1.setPictogram(getResources().getDrawable(R.drawable.picto_si));
-        Picto1.setText("Si");
-        Picto1.setColor(getResources().getColor(R.color.Magenta));
-        Picto4.setPictogram(getResources().getDrawable(R.drawable.picto_no));
-        Picto4.setText("No");
-        Picto4.setColor(getResources().getColor(R.color.Magenta));
+        Picto1.setCustom_Img(getResources().getDrawable(R.drawable.picto_si));
+        Picto1.setCustom_Texto("Si");
+        Picto1.setCustom_Color(getResources().getColor(R.color.Magenta));
+        Picto4.setCustom_Img(getResources().getDrawable(R.drawable.picto_no));
+        Picto4.setCustom_Texto("No");
+        Picto4.setCustom_Color(getResources().getColor(R.color.Magenta));
 
         listPictos.add(Picto1);
         listPictos.add(Picto2);
 
 
         mStrIdioma = Locale.getDefault().getLanguage();
+        yesNoQuestions.setmStrIdioma(mStrIdioma);
         InputManager inputManager = (InputManager) this.getSystemService(Context.INPUT_SERVICE);
         inputManager.registerInputDeviceListener(new InputManager.InputDeviceListener() {
             @Override
@@ -223,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    void loadPictos(List<Picto> array) {
+    void loadPictos(List<PictoView> array) {
         cleanPictos();
 
         if (array.size() == 0) {
@@ -265,51 +273,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Picto4.setVisibility(View.INVISIBLE);
     }
 
-    boolean esSiNo(String pregunta) {
-        switch (mStrIdioma) {
-            case "es":
-                pregunta = stripAccents(pregunta);
-                int i = pregunta.indexOf(' ');
-                if (i != -1)
-                    pregunta = pregunta.substring(0, i);
-                return pregunta.equals("podes") ||
-                        pregunta.equals("puedes") ||
-                        pregunta.equals("tenes") ||
-                        pregunta.equals("te") ||
-                        pregunta.equals("conoces") ||
-                        pregunta.equals("queres") ||
-                        pregunta.equals("quieres") ||
-                        pregunta.equals("vas") ||
-                        pregunta.equals("ya") ||
-                        pregunta.equals("tienes") ||
-                        pregunta.equals("tomaste") ||
-                        pregunta.equals("es") ||
-                        pregunta.equals("lo") ||
-                        pregunta.equals("hace") ||
-                        pregunta.equals("somos") ||
-                        pregunta.equals("sos");
-
-            case "en":
-                switch (pregunta.substring(0, 2)) {
-                    case "wh":
-                        return false;
-                    case "ho":
-                        return false;
-                    default:
-                        return true;
-                }
-
-            default:
-                switch (pregunta.substring(0, 2)) {
-                    case "wh":
-                        return false;
-                    case "ho":
-                        return false;
-                    default:
-                        return true;
-                }
-        }
-    }
 
     private void speak(String utterance) {
 //        Bundle bundle = new Bundle();
@@ -378,6 +341,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return false;
     }
+
+
+
+
+
+
 
 
 }

@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/ButtonsContainer"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:textColor="@android:color/white"
         android:textSize="36sp"
         android:textStyle="normal"/>
@@ -32,56 +32,56 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:id="@+id/linearLayout"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_weight="5">
-
-        <com.stonefacesoft.pictogramslibrary.view.PictoView
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:onClick="onClick"
-            android:id="@+id/picto1"
-            custom:Texto="Hola"
-            custom:Color="4"/>
+            android:layout_height="0dp"
+            android:id="@+id/linearLayout"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_weight="5">
+
+            <com.stonefacesoft.pictogramslibrary.view.PictoView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:onClick="onClick"
+                android:id="@+id/picto1"
+                custom:Texto="Hola"
+                custom:Color="4"/>
 
 
-        <com.stonefacesoft.pictogramslibrary.view.PictoView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:id="@+id/picto2"
-            app:Texto="Hola"
-            app:Color="2"/>
+            <com.stonefacesoft.pictogramslibrary.view.PictoView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/picto2"
+                app:Texto="Hola"
+                app:Color="2"/>
 
-        <com.stonefacesoft.pictogramslibrary.view.PictoView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:id="@+id/picto3"
-            app:Texto="Hola"
-            app:Color="2"/>
+            <com.stonefacesoft.pictogramslibrary.view.PictoView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/picto3"
+                app:Texto="Hola"
+                app:Color="2"/>
 
-        <com.stonefacesoft.pictogramslibrary.view.PictoView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:id="@+id/picto4"
-            app:Texto="Hola"
-            app:Color="2"/>
+            <com.stonefacesoft.pictogramslibrary.view.PictoView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:id="@+id/picto4"
+                app:Texto="Hola"
+                app:Color="2"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
         <Button
             android:id="@+id/btnBarrido"
             android:layout_width="0dp"

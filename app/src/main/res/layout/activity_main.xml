@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/linearLayoutButtons"
         >
-    <com.stonefacesoft.questions.utils.Picto
+    <com.stonefacesoft.pictogramslibrary.view.PictoView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="15dp"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toStartOf="@id/picto2"
         app:layout_constraintBottom_toTopOf="@id/picto3"/>
 
-    <com.stonefacesoft.questions.utils.Picto
+    <com.stonefacesoft.pictogramslibrary.view.PictoView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="15dp"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/picto4"/>
 
-    <com.stonefacesoft.questions.utils.Picto
+    <com.stonefacesoft.pictogramslibrary.view.PictoView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="15dp"
@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toStartOf="@id/picto4"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.stonefacesoft.questions.utils.Picto
+    <com.stonefacesoft.pictogramslibrary.view.PictoView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="15dp"
