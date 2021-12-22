@@ -1,24 +1,36 @@
+import 'dart:developer';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
-import 'package:questions_by_ottaa/views/main_view.dart';
+import 'package:questions_by_ottaa/services.dart/test_RT_DB.dart';
+import 'package:questions_by_ottaa/views/auth_view.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // SystemChrome.setPreferredOrientations(
-  //         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
-  //     .whenComplete(() => runApp(const MyApp()));
-  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-
-  // runApp(VoiceMyApp());
-
-
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: "AIzaSyDYckwyYFjys6DlADmLko462F47eaXBkX0",
+        authDomain: "questions-abd23.firebaseapp.com",
+        databaseURL: "https://questions-abd23-default-rtdb.firebaseio.com",
+        projectId: "questions-abd23",
+        storageBucket: "questions-abd23.appspot.com",
+        messagingSenderId: "122497661206",
+        appId: "1:122497661206:web:a8c8094bd59ca40ca1f837",
+        measurementId: "G-RMQ677H96F"),
+  );
 
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
-      .whenComplete(() => runApp(const MyApp()));
+          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
+      .whenComplete(
+    () => runApp(
+      const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -31,140 +43,38 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        // body:RegistrationPage(),                 the app first goes to registration or login screen then to MainView
+    return ResponsiveSizer(builder: (context, orientation, screenType) {
+      return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: AuthView(),
+      );
+    });
+  }
+}
 
-        appBar: AppBar(
-          title: Text('Questions'),
-          backgroundColor: kColorAppbar,
-        ),
-
-        body: MainView(),
-      ),
+// ignore: must_be_immutable
+class Testing extends StatelessWidget {
+  Testing({Key? key}) : super(key: key);
+  final dref = FirebaseDatabase.instance.ref('Pictos/es');
+  List identifiers = [
+    '-LdOoXpHFB2lk2_BsDYp',
+    '-LdOoXqmwn3XeWPrciXC',
+    '-LdOoXsaLIZOHBNJx0--',
+    '-LdOoXuF5SV3sJ9y7xGM',
+    '-LdOoY3KcYvhk1LNvFIa',
+    '-LdOoY52nPKO0F8PSIE5',
+    '-LdOoYG_aib1lwviCpOa',
+    '-LdOoYEbCHY3NS0vPiUH',
+    '-LdOoY9ajLC1brSE-L6b'
+  ];
+  List<Map> mappedData = [];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+          child: Image.network(Uri.parse(
+                  'https://firebasestorage.googleapis.com/v0/b/respondedor-d9af9.appspot.com/o/zid_dolor_de_muela.webp?alt=media&token=fcd6e767-b9fe-4e82-996b-a557569ee559')
+              .toString())),
     );
   }
 }
-//
-// class HomeView extends StatelessWidget {
-//   HomeView({Key? key}) : super(key: key);
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       color: Colors.brown,
-//       child: LayoutBuilder(
-//         builder: (context, constraints) {
-//           var screenHeight = constraints.maxHeight;
-//           var screenWidth = constraints.maxWidth;
-//
-//           debugPrint('Max height: $screenHeight, max width: $screenWidth');
-//           return SingleChildScrollView(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               children: <Widget>[
-//                 // Main RED
-//                 Container(
-//                   constraints: BoxConstraints(
-//                       minHeight: screenHeight * 0.8, minWidth: screenWidth),
-//                   color: Colors.red,
-//
-//                   ///////////// ANSWER SECTION
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                     children: [
-//                       Container(
-//                         height: screenHeight * 0.6,
-//                         width: screenWidth * 0.28,
-//                         decoration: BoxDecoration(
-//                           color: Colors.white,
-//                           borderRadius: BorderRadius.circular(12.0),
-//                         ),
-//                         child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                           children: [
-//                             // image Container
-//                             Container(
-//                               height: (screenHeight * 0.8) * 0.6,
-//                               width: (screenWidth * 0.28) * 0.8,
-//                               decoration: BoxDecoration(
-//                                 borderRadius: BorderRadius.circular(12.0),
-//                                 border:
-//                                     Border.all(width: 4, color: kBorderColor),
-//                               ),
-//                               child: LayoutBuilder(
-//                                 builder: (_, constraints) {
-//                                   return Icon(
-//                                     Icons.check,
-//                                     color: Colors.green,
-//                                     size: constraints.biggest.height,
-//                                   );
-//                                 },
-//                               ),
-//                             )
-//                             // Answer TEXT Container
-//                             ,
-//                             Container(
-//                               child: Text('SI'),
-//                             )
-//                           ],
-//                         ),
-//                       ),
-//                       Container(
-//                         height: screenHeight * 0.6,
-//                         width: screenWidth * 0.28,
-//                         decoration: BoxDecoration(
-//                           color: Colors.white,
-//                           borderRadius: BorderRadius.circular(12.0),
-//                         ),
-//                         child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                           children: [
-//                             // image Container
-//                             Container(
-//                               height: (screenHeight * 0.8) * 0.6,
-//                               width: (screenWidth * 0.28) * 0.8,
-//                               decoration: BoxDecoration(
-//                                 borderRadius: BorderRadius.circular(12.0),
-//                                 border:
-//                                     Border.all(width: 4, color: kBorderColor),
-//                               ),
-//                               child: LayoutBuilder(
-//                                 builder: (_, constraints) {
-//                                   return Icon(
-//                                     Icons.close,
-//                                     color: Colors.red,
-//                                     size: constraints.biggest.height,
-//                                   );
-//                                 },
-//                               ),
-//                             )
-//                             // Answer TEXT Container
-//                             ,
-//                             Container(
-//                               child: Text('NO'),
-//                             )
-//                           ],
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 Row(
-//                   children: [
-//                     Container(
-//                       constraints:
-//                           BoxConstraints(minHeight: screenHeight * 0.1),
-//                       color: Colors.green,
-//                     ),
-//                   ],
-//                 )
-//               ],
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }

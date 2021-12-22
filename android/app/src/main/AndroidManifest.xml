@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.questions_by_ottaa">
+    package="com.itszuraiz.questions">
 
 <!-- Permissions for Speech to Text -->
   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
