@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:questions_by_ottaa/services.dart/test_RT_DB.dart';
+import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
+import 'package:questions_by_ottaa/views/main_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 Future<void> main() async {
@@ -45,39 +43,36 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    auth.isAlreadyLoggedin();
+    super.initState();
+  }
+
+  final auth = Get.put(AuthController());
+  Widget homeWidget = AuthView();
+  @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        home: AuthView(),
+        home: auth.isLoggedin.value ? MainView() : AuthView(),
       );
     });
   }
 }
 
-// ignore: must_be_immutable
 class Testing extends StatelessWidget {
-  Testing({Key? key}) : super(key: key);
-  final dref = FirebaseDatabase.instance.ref('Pictos/es');
-  List identifiers = [
-    '-LdOoXpHFB2lk2_BsDYp',
-    '-LdOoXqmwn3XeWPrciXC',
-    '-LdOoXsaLIZOHBNJx0--',
-    '-LdOoXuF5SV3sJ9y7xGM',
-    '-LdOoY3KcYvhk1LNvFIa',
-    '-LdOoY52nPKO0F8PSIE5',
-    '-LdOoYG_aib1lwviCpOa',
-    '-LdOoYEbCHY3NS0vPiUH',
-    '-LdOoY9ajLC1brSE-L6b'
-  ];
-  List<Map> mappedData = [];
+  const Testing({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          child: Image.network(Uri.parse(
-                  'https://firebasestorage.googleapis.com/v0/b/respondedor-d9af9.appspot.com/o/zid_dolor_de_muela.webp?alt=media&token=fcd6e767-b9fe-4e82-996b-a557569ee559')
-              .toString())),
+        child: ElevatedButton(
+          child: Text('Press'),
+          onPressed: () {},
+        ),
+      ),
     );
   }
 }

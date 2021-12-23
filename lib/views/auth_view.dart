@@ -72,8 +72,7 @@ class AuthView extends StatelessWidget {
                               try {
                                 bool isDone = await cAuth.login();
                                 isDone
-                                    ? Get.off(() => MainView(),
-                                        binding: SpeechBinding())
+                                    ? Get.off(() => MainView())
                                     : null;
                               } catch (e) {
                                 log('====ERROR OCCURED $e');

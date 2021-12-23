@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
 import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
+import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -35,11 +36,8 @@ class WebAudioController extends GetxController {
       onError: errorListener,
       onStatus: statusListener,
       debugLogging: true,
-
-      
     );
     if (hasSpeech) {
-
       var systemLocale = await speech.systemLocale();
       _currentLocaleId.value = systemLocale?.localeId ?? '';
     }
@@ -50,16 +48,18 @@ class WebAudioController extends GetxController {
     isListening.value = true;
 
     _logEvent('start listening');
+    print('Started listening');
     lastWords.value = '';
     lastError.value = '';
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 30),
+        listenFor: Duration(seconds: 5),
         pauseFor: Duration(seconds: 5),
         partialResults: true,
         localeId: 'es_AR',
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
+        onDevice: true,
         listenMode: ListenMode.confirmation);
   }
 
@@ -75,22 +75,21 @@ class WebAudioController extends GetxController {
     speech.cancel();
     level.value = 0.0;
   }
-RxBool isYesNoBool = true.obs;
+
+  RxBool isYesNoBool = true.obs;
   void resultListener(SpeechRecognitionResult result) {
     print(
         'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
     lastWords.value = '${result.recognizedWords}';
     if (result.finalResult) {
-
-      print('COMES IN SENDING TO DF ');
+      print('COMES IN SENDING TO QuestionDectection ');
       bool result = cQuestions.isYesNo(lastWords.value);
-      if(result)
-          {
-            isYesNoBool.value = false;
-          print('Yes NO Question');
-          }
-          else{
+      if (result) {
+        isYesNoBool.value = false;
+        print('Yes NO Question');
+      } else {
         isYesNoBool.value = true;
+        // tempLength.value = 0;
         cDialogflow.sendMessage(lastWords.value);
       }
     }
@@ -99,7 +98,6 @@ RxBool isYesNoBool = true.obs;
   void soundLevelListener(double levels) {
     minSoundLevel = min(minSoundLevel, levels);
     maxSoundLevel = max(maxSoundLevel, levels);
-    // _logEvent('sound level $level: $minSoundLevel - $maxSoundLevel ');
     level.value = levels;
   }
 
@@ -123,101 +121,3 @@ RxBool isYesNoBool = true.obs;
     }
   }
 }
-
-// class RecognitionResultsWidget extends StatelessWidget {
-//   const RecognitionResultsWidget({
-//     Key? key,
-//     required this.lastWords,
-//     required this.level,
-//   }) : super(key: key);
-
-//   final String lastWords;
-//   final double level;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: <Widget>[
-//         Center(
-//           child: Text(
-//             'Recognized Words',
-//             style: TextStyle(fontSize: 22.0),
-//           ),
-//         ),
-//         Expanded(
-//           child: Stack(
-//             children: <Widget>[
-//               Container(
-//                 color: Theme.of(context).selectedRowColor,
-//                 child: Center(
-//                   child: Text(
-//                     lastWords,
-//                     textAlign: TextAlign.center,
-//                   ),
-//                 ),
-//               ),
-//               Positioned.fill(
-//                 bottom: 10,
-//                 child: Align(
-//                   alignment: Alignment.bottomCenter,
-//                   child: Container(
-//                     width: 40,
-//                     height: 40,
-//                     alignment: Alignment.center,
-//                     decoration: BoxDecoration(
-//                       boxShadow: [
-//                         BoxShadow(
-//                             blurRadius: .26,
-//                             spreadRadius: level * 1.5,
-//                             color: Colors.black.withOpacity(.05))
-//                       ],
-//                       color: Colors.white,
-//                       borderRadius: BorderRadius.all(Radius.circular(50)),
-//                     ),
-//                     child: IconButton(
-//                       icon: Icon(Icons.mic),
-//                       onPressed: () => null,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-// Container(
-//                                           decoration: BoxDecoration(
-//                                               border: Border.all(
-//                                                   color: Colors.white)),
-//                                           constraints: BoxConstraints(
-//                                               minHeight: 50.h,
-//                                               minWidth: screenWidth),
-//                                           child: Padding(
-//                                             padding: const EdgeInsets.all(15.0),
-//                                             child: Center(
-//                                                 child: Row(
-//                                               mainAxisAlignment:
-//                                                   MainAxisAlignment
-//                                                       .spaceBetween,
-//                                               children: [
-//                                                 AnswerCard(
-//                                                   screenHeight: screenHeight,
-//                                                   screenWidth: screenWidth,
-//                                                   icon: Icons.check_rounded,
-//                                                   iconColor: Colors.green,
-//                                                   ans: 'SI',
-//                                                 ),
-//                                                 AnswerCard(
-//                                                   screenHeight: screenHeight,
-//                                                   screenWidth: screenWidth,
-//                                                   icon: Icons.close_rounded,
-//                                                   iconColor: Colors.red,
-//                                                   ans: 'NO',
-//                                                 ),
-//                                               ],
-//                                             )),
-//                                           ),
-//                                         ),

@@ -2,13 +2,15 @@ import 'dart:developer';
 
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:questions_by_ottaa/utils/constants.dart';
 
 class DialogflowController extends GetxController {
   final dref = FirebaseDatabase.instance.ref('Pictos/es');
   RxList dataList = [].obs;
   late DialogFlowtter dialogFlowtter;
-  RxBool responseDone = false.obs;
+  Rxn<bool> responseDone = Rxn<bool>();
   RxList firebaseIdentifiers = [].obs;
   RxList dataMapList = [].obs;
   @override
@@ -54,7 +56,6 @@ class DialogflowController extends GetxController {
     firebaseIdentifiers.value =
         List.from(response.text!.trim().split(',').toList());
 
-    responseDone.value = true;
     getData();
   }
 
@@ -87,7 +88,14 @@ class DialogflowController extends GetxController {
       }
     });
     print('Data List : ' + dataMapList.toString());
-    responseDone.value = true;
+    if (dataMapList[0]['label'] == null) {
+      Get.snackbar('Try Again', 'No Data Found', backgroundColor: Colors.white);
+      showWaiting.value = false;
+    } else {
+      responseDone.value = true;
+      showWaiting.value = false;
+      tempLength.value = 4;
+    }
   }
 
   @override

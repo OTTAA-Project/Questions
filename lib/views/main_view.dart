@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/controllers/databaseController.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
 import 'package:questions_by_ottaa/controllers/mainViewController.dart';
@@ -16,6 +17,7 @@ import 'package:questions_by_ottaa/controllers/ttsController.dart';
 import 'package:questions_by_ottaa/controllers/webAudioController.dart';
 import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/google_speech_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -28,40 +30,51 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final mainController = Get.put(MainViewController());
-  // final cAuth = Get.put(AuthController());
+  final cAuth = Get.put(AuthController());
   final cQuestions = Get.put(QuestionDetection());
-  final cSpeech = Get.find<SttController>();
+  final cSpeech = Get.put(SttController());
   final cWebAudio = Get.put(WebAudioController());
-  // final cDatabase = Get.put(DatabaseController());
   final cDialogflow = Get.put(DialogflowController());
   final cWebAudioController = Get.put(WebAudioController());
 
   bool isYesNo = false;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            log('Pressed More Button');
+            if (cDialogflow.dataMapList.length > 4) {
+              showMoreOptions.value = true;
+              tempLength.value = cDialogflow.dataMapList.length;
+            } else
+              print('Less Then 4');
+          },
+          child: Icon(
+            Icons.add,
+            size: 20.sp,
+          ),
+        ),
         appBar: AppBar(
           title: Text('Questions'),
           backgroundColor: kColorAppbar,
           automaticallyImplyLeading: false,
-          // actions: [
-          // ActionChip(
-          //     // backgroundColor: kPrimaryFont,
-          //     shape: RoundedRectangleBorder(),
-          //     label: Text(
-          //       'Logout',
-          //       style: TextStyle(fontWeight: FontWeight.bold),
-          //     ),
-          //     onPressed: () {
-          //       cAuth.logout();
-          //       Get.to(() => AuthView());
-          //     }),
-          // SizedBox(
-          //   width: 20.0,
-          // )
-          // ],
+          actions: [
+            ActionChip(
+                shape: RoundedRectangleBorder(),
+                label: Text(
+                  'Logout',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  cAuth.logout();
+                  Get.to(() => AuthView());
+                }),
+            SizedBox(
+              width: 20.0,
+            )
+          ],
         ),
         body: GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -93,7 +106,6 @@ class _MainViewState extends State<MainView> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                        // height: size.height * 0.1,
                                         child: Center(
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -114,68 +126,135 @@ class _MainViewState extends State<MainView> {
                                       ////////////// RESULTS DISPLAY
                                       !cWebAudio.isYesNoBool.value ||
                                               cSpeech.isYesNoDetect.value
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                YesNoWidget(
-                                                  ans: 'SI',
-                                                  icon: Icons.check_rounded,
-                                                  iconColor: Colors.green,
-                                                  screenWidth: screenWidth,
-                                                  screenHeight: screenHeight,
-                                                ),
-                                                YesNoWidget(
-                                                  ans: 'NO',
-                                                  icon: Icons.close_rounded,
-                                                  iconColor: Colors.red,
-                                                  screenWidth: screenWidth,
-                                                  screenHeight: screenHeight,
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 15.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  YesNoWidget(
+                                                    ans: 'SI',
+                                                    icon: 'yes',
+                                                    iconColor: Colors.green,
+                                                    screenWidth: screenWidth,
+                                                    screenHeight: screenHeight,
+                                                  ),
+                                                  YesNoWidget(
+                                                    ans: 'NO',
+                                                    icon: 'no',
+                                                    iconColor: Colors.red,
+                                                    screenWidth: screenWidth,
+                                                    screenHeight: screenHeight,
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          // add a circular progress indicator
+                                          : cDialogflow.responseDone.value !=
+                                                      true &&
+                                                  showWaiting.value
+                                              ? Container(
+                                                  height: 55.h,
+                                                  width: 98.w,
+                                                  child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
                                                 )
-                                              ],
-                                            )
-                                          : Container(
-                                              height: 60.h,
-                                              width: double.infinity,
-                                              child: ListView.builder(
-                                                  itemCount: cDialogflow
-                                                      .dataMapList.length,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return cDialogflow.dataMapList[
-                                                                        index]
-                                                                    ['label'] ==
-                                                                null ||
-                                                            cDialogflow.dataMapList[
-                                                                        index]
-                                                                    ['label'] ==
-                                                                null
-                                                        ? SizedBox()
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: AnswerCard(
-                                                              ans: cDialogflow
-                                                                      .dataMapList[
-                                                                  index]['label'],
-                                                              icon: cDialogflow
-                                                                      .dataMapList[
-                                                                  index]['url'],
-                                                              iconColor:
-                                                                  Colors.blue,
-                                                              screenWidth:
-                                                                  screenWidth,
-                                                              screenHeight:
-                                                                  screenHeight,
-                                                            ),
-                                                          );
-                                                  }),
-                                            )
+                                              : Center(
+                                                  child: Container(
+                                                    height: 55.h,
+                                                    width: 98.w,
+                                                    child: !showMoreOptions
+                                                            .value
+                                                        ? ListView.builder(
+                                                            itemCount:
+                                                                tempLength
+                                                                    .value,
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return cDialogflow.dataMapList[index]
+                                                                              [
+                                                                              'label'] ==
+                                                                          null ||
+                                                                      cDialogflow.dataMapList[index]
+                                                                              [
+                                                                              'label'] ==
+                                                                          null
+                                                                  ? SizedBox()
+                                                                  : Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          right:
+                                                                              15.0),
+                                                                      child:
+                                                                          AnswerCard(
+                                                                        ans: cDialogflow.dataMapList[index]
+                                                                            [
+                                                                            'label'],
+                                                                        icon: cDialogflow.dataMapList[index]
+                                                                            [
+                                                                            'url'],
+                                                                        iconColor:
+                                                                            Colors.blue,
+                                                                        screenWidth:
+                                                                            screenWidth,
+                                                                        screenHeight:
+                                                                            screenHeight,
+                                                                      ),
+                                                                    );
+                                                            })
+                                                        : ListView.builder(
+                                                            itemCount:
+                                                                cDialogflow
+                                                                    .dataMapList
+                                                                    .length,
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return cDialogflow.dataMapList[index]
+                                                                              [
+                                                                              'label'] ==
+                                                                          null ||
+                                                                      cDialogflow.dataMapList[index]
+                                                                              [
+                                                                              'label'] ==
+                                                                          null
+                                                                  ? SizedBox()
+                                                                  : Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          right:
+                                                                              15.0),
+                                                                      child:
+                                                                          AnswerCard(
+                                                                        ans: cDialogflow.dataMapList[index]
+                                                                            [
+                                                                            'label'],
+                                                                        icon: cDialogflow.dataMapList[index]
+                                                                            [
+                                                                            'url'],
+                                                                        iconColor:
+                                                                            Colors.blue,
+                                                                        screenWidth:
+                                                                            screenWidth,
+                                                                        screenHeight:
+                                                                            screenHeight,
+                                                                      ),
+                                                                    );
+                                                            }),
+                                                  ),
+                                                )
                                     ]),
                               ));
                             },
@@ -247,6 +326,8 @@ class _MainViewState extends State<MainView> {
                                         if (cWebAudioController
                                             .isListening.value) {
                                           cWebAudioController.stopListening();
+                                          showWaiting.value = true;
+                                          tempLength.value = 0;
                                         } else {
                                           cWebAudioController.startListening();
                                           // cWebAudio.isYesNoBool.value = true;
@@ -318,7 +399,7 @@ class YesNoWidget extends StatelessWidget {
 
   double? screenHeight = Get.height;
   double? screenWidth = Get.width;
-  IconData? icon;
+  String? icon;
   Color? iconColor;
   String? ans;
 
@@ -351,11 +432,7 @@ class YesNoWidget extends StatelessWidget {
               ),
               child: LayoutBuilder(
                 builder: (_, constraints) {
-                  return Icon(
-                    icon,
-                    color: iconColor,
-                    size: constraints.biggest.height,
-                  );
+                  return Image.asset('images/$icon.png');
                 },
               ),
             ),

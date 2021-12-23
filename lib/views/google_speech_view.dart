@@ -98,8 +98,9 @@ class GoogleSpeechView extends StatelessWidget {
                     color: kColorAppbar,
                     onPressed: () {
                       cSpeech.stopRecording();
-                      cDialogflow.sendMessage(
-                          cSpeech.text != '' ? cSpeech.text.value : '');
+                      cSpeech.text != ''
+                          ? cDialogflow.sendMessage(cSpeech.text.value)
+                          : null;
                       cSpeech.recognizeFinished.value ? Get.back() : null;
                     },
                     child: Text(cSpeech.recognizing.value ? 'Stop' : 'Retry',
