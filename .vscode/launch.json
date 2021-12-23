@@ -9,16 +9,14 @@
             "request": "launch",
             "type": "dart",
             "args" : ["--web-port","5000"],
-           
-            
         },
-        {
-            "name": "questions_by_ottaa (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
+        // {
+        //     "name": "questions_by_ottaa (profile mode)",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "flutterMode": "profile"
             
-        }
+        // }
         
     ]
 }

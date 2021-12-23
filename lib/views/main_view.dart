@@ -101,15 +101,19 @@ class _MainViewState extends State<MainView> {
                                               cSpeech.text == ''
                                                   ? '${cWebAudioController.lastWords.value}'
                                                   : '${cSpeech.text.value}',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.visible,
                                               style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
                                                   color: kPrimaryFont,
-                                                  fontSize: 20.0.sp),
+                                                  fontSize: 16.0.sp),
                                             ),
                                           ),
                                         ),
                                       ),
                                       ////////////// RESULTS DISPLAY
-                                      !cWebAudio.isYesNoBool.value
+                                      !cWebAudio.isYesNoBool.value ||
+                                              cSpeech.isYesNoDetect.value
                                           ? Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -142,33 +146,41 @@ class _MainViewState extends State<MainView> {
                                                   itemBuilder:
                                                       (BuildContext context,
                                                           int index) {
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: AnswerCard(
-                                                        ans: cDialogflow
-                                                                .dataMapList[
-                                                            index]['label'],
-                                                        icon: cDialogflow
-                                                                .dataMapList[
-                                                            index]['url'],
-                                                        iconColor: Colors.blue,
-                                                        screenWidth:
-                                                            screenWidth,
-                                                        screenHeight:
-                                                            screenHeight,
-                                                      ),
-                                                    );
+                                                    return cDialogflow.dataMapList[
+                                                                        index]
+                                                                    ['label'] ==
+                                                                null ||
+                                                            cDialogflow.dataMapList[
+                                                                        index]
+                                                                    ['label'] ==
+                                                                null
+                                                        ? SizedBox()
+                                                        : Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: AnswerCard(
+                                                              ans: cDialogflow
+                                                                      .dataMapList[
+                                                                  index]['label'],
+                                                              icon: cDialogflow
+                                                                      .dataMapList[
+                                                                  index]['url'],
+                                                              iconColor:
+                                                                  Colors.blue,
+                                                              screenWidth:
+                                                                  screenWidth,
+                                                              screenHeight:
+                                                                  screenHeight,
+                                                            ),
+                                                          );
                                                   }),
                                             )
-
                                     ]),
                               ));
                             },
                           ),
                         )),
-
                     Expanded(
                       flex: 1,
                       child: Center(

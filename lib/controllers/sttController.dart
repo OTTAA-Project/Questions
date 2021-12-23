@@ -12,7 +12,6 @@ class SttController extends GetxController {
   final RecorderStream _recorder = RecorderStream();
   final qd = QuestionDetection();
   final cDialogflow = Get.put(DialogflowController());
-  RxBool result = true.obs;
 
   RxBool recognizing = false.obs;
   RxBool recognizeFinished = false.obs;
@@ -26,6 +25,8 @@ class SttController extends GetxController {
     super.onInit();
     _recorder.initialize();
   }
+
+  RxBool result = true.obs;
 
   Future<void> streamingRecognize() async {
     text.value = '';
@@ -84,15 +85,18 @@ class SttController extends GetxController {
 
           result.value = qd.isYesNo(text.value);
           if (result.value) {
-            result.value = false;
+            isYesNoDetect.value = true;
             log('It is a YES NO Question');
           } else {
+            isYesNoDetect.value = false;
             cDialogflow.sendMessage(text.value);
             print('out from send message');
             cDialogflow.getData();
           }
         });
   }
+
+  RxBool isYesNoDetect = false.obs;
 
   void stopRecording() async {
     await _recorder.stop();

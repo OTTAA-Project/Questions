@@ -12,17 +12,20 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-        apiKey: "AIzaSyDYckwyYFjys6DlADmLko462F47eaXBkX0",
-        authDomain: "questions-abd23.firebaseapp.com",
-        databaseURL: "https://questions-abd23-default-rtdb.firebaseio.com",
-        projectId: "questions-abd23",
-        storageBucket: "questions-abd23.appspot.com",
-        messagingSenderId: "122497661206",
-        appId: "1:122497661206:web:a8c8094bd59ca40ca1f837",
-        measurementId: "G-RMQ677H96F"),
-  );
+  kIsWeb
+      ? await Firebase.initializeApp(
+          options: FirebaseOptions(
+              apiKey: "AIzaSyDYckwyYFjys6DlADmLko462F47eaXBkX0",
+              authDomain: "questions-abd23.firebaseapp.com",
+              databaseURL:
+                  "https://questions-abd23-default-rtdb.firebaseio.com",
+              projectId: "questions-abd23",
+              storageBucket: "questions-abd23.appspot.com",
+              messagingSenderId: "122497661206",
+              appId: "1:122497661206:web:a8c8094bd59ca40ca1f837",
+              measurementId: "G-RMQ677H96F"),
+        )
+      : await Firebase.initializeApp();
 
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
