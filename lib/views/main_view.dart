@@ -42,20 +42,20 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            log('Pressed More Button');
-            if (cDialogflow.dataMapList.length > 4) {
-              showMoreOptions.value = true;
-              tempLength.value = cDialogflow.dataMapList.length;
-            } else
-              print('Less Then 4');
-          },
-          child: Icon(
-            Icons.add,
-            size: 20.sp,
-          ),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     log('Pressed More Button');
+        //     if (cDialogflow.dataMapList.length > 4) {
+        //       showMoreOptions.value = true;
+        //       tempLength.value = cDialogflow.dataMapList.length;
+        //     } else
+        //       print('Less Then 4');
+        //   },
+        //   child: Icon(
+        //     Icons.add,
+        //     size: 20.sp,
+        //   ),
+        // ),
         appBar: AppBar(
           title: Text('Questions'),
           backgroundColor: kColorAppbar,
@@ -290,7 +290,7 @@ class _MainViewState extends State<MainView> {
                       LayoutBuilder(builder: (_, constraints) {
                         return Container(
                           height: 80, // 80
-                          width: 130, // 130
+                          width: 200, // 130
                           decoration: BoxDecoration(
                             color: Color(0xFFBB86FC),
                             borderRadius: BorderRadius.only(
@@ -379,6 +379,33 @@ class _MainViewState extends State<MainView> {
                                         color: Colors.black,
                                       ),
                                     ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 100,
+                        top: 10,
+                        child: Container(
+                          height: 60.0,
+                          width: 120.0,
+                          child: FittedBox(
+                            child: FloatingActionButton(
+                              backgroundColor: Color(0xFF03DAC5),
+                              onPressed: () {
+                                log('Pressed More Button');
+                                if (cDialogflow.dataMapList.length > 4) {
+                                  showMoreOptions.value = true;
+                                  tempLength.value =
+                                      cDialogflow.dataMapList.length;
+                                } else
+                                  print('Less Then 4');
+                              },
+                              child: Icon(
+                                Icons.add,
+                                size: 20.sp,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
