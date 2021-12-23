@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
+import 'package:questions_by_ottaa/controllers/ttsController.dart';
+import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -56,23 +60,8 @@ class _MyAppState extends State<MyApp> {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         home: auth.isLoggedin.value ? MainView() : AuthView(),
+
       );
     });
-  }
-}
-
-class Testing extends StatelessWidget {
-  const Testing({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: ElevatedButton(
-          child: Text('Press'),
-          onPressed: () {},
-        ),
-      ),
-    );
   }
 }

@@ -100,72 +100,76 @@ class _MainViewState extends State<MainView> {
                               var screenWidth = constraints.maxWidth;
                               return SingleChildScrollView(
                                   child: Obx(
-                                () => Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              cSpeech.text == ''
-                                                  ? '${cWebAudioController.lastWords.value}'
-                                                  : '${cSpeech.text.value}',
-                                              maxLines: 2,
-                                              overflow: TextOverflow.visible,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: kPrimaryFont,
-                                                  fontSize: 16.0.sp),
+                                () => Center(
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          child: Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                cSpeech.text == ''
+                                                    ? '${cWebAudioController.lastWords.value}'
+                                                    : '${cSpeech.text.value}',
+                                                maxLines: 2,
+                                                overflow: TextOverflow.visible,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: kPrimaryFont,
+                                                    fontSize: 16.0.sp),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      ////////////// RESULTS DISPLAY
-                                      !cWebAudio.isYesNoBool.value ||
-                                              cSpeech.isYesNoDetect.value
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 15.0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  YesNoWidget(
-                                                    ans: 'SI',
-                                                    icon: 'yes',
-                                                    iconColor: Colors.green,
-                                                    screenWidth: screenWidth,
-                                                    screenHeight: screenHeight,
-                                                  ),
-                                                  YesNoWidget(
-                                                    ans: 'NO',
-                                                    icon: 'no',
-                                                    iconColor: Colors.red,
-                                                    screenWidth: screenWidth,
-                                                    screenHeight: screenHeight,
+                                        ////////////// RESULTS DISPLAY
+                                        !cWebAudio.isYesNoBool.value ||
+                                                cSpeech.isYesNoDetect.value
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 15.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    YesNoWidget(
+                                                      ans: 'SI',
+                                                      icon: 'yes',
+                                                      iconColor: Colors.green,
+                                                      screenWidth: screenWidth,
+                                                      screenHeight:
+                                                          screenHeight,
+                                                    ),
+                                                    YesNoWidget(
+                                                      ans: 'NO',
+                                                      icon: 'no',
+                                                      iconColor: Colors.red,
+                                                      screenWidth: screenWidth,
+                                                      screenHeight:
+                                                          screenHeight,
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            // add a circular progress indicator
+                                            : cDialogflow.responseDone.value !=
+                                                        true &&
+                                                    showWaiting.value
+                                                ? Container(
+                                                    height: 55.h,
+                                                    width: 98.w,
+                                                    child: Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
                                                   )
-                                                ],
-                                              ),
-                                            )
-                                          // add a circular progress indicator
-                                          : cDialogflow.responseDone.value !=
-                                                      true &&
-                                                  showWaiting.value
-                                              ? Container(
-                                                  height: 55.h,
-                                                  width: 98.w,
-                                                  child: Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                )
-                                              : Center(
-                                                  child: Container(
+                                                : Container(
                                                     height: 55.h,
                                                     width: 98.w,
                                                     child: !showMoreOptions
@@ -193,6 +197,8 @@ class _MainViewState extends State<MainView> {
                                                                       padding: const EdgeInsets
                                                                               .only(
                                                                           right:
+                                                                              8.5,
+                                                                          left:
                                                                               15.0),
                                                                       child:
                                                                           AnswerCard(
@@ -205,7 +211,8 @@ class _MainViewState extends State<MainView> {
                                                                         iconColor:
                                                                             Colors.blue,
                                                                         screenWidth:
-                                                                            screenWidth,
+                                                                            Get.size.width *
+                                                                                0.81,
                                                                         screenHeight:
                                                                             screenHeight,
                                                                       ),
@@ -247,15 +254,16 @@ class _MainViewState extends State<MainView> {
                                                                         iconColor:
                                                                             Colors.blue,
                                                                         screenWidth:
-                                                                            screenWidth,
+                                                                            Get.size.width *
+                                                                                0.81,
                                                                         screenHeight:
                                                                             screenHeight,
                                                                       ),
                                                                     );
                                                             }),
-                                                  ),
-                                                )
-                                    ]),
+                                                  )
+                                      ]),
+                                ),
                               ));
                             },
                           ),
