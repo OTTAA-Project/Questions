@@ -23,7 +23,7 @@ class WebAudioController extends GetxController {
   RxString _currentLocaleId = ''.obs;
   RxBool isListening = false.obs;
 
-  final AudioCache audioPlayer = AudioCache();
+  final audioPlayer = AudioPlayer();
   final SpeechToText speech = SpeechToText();
   final cQuestions = Get.put(QuestionDetection());
   final cDialogflow = Get.put(DialogflowController());
@@ -48,7 +48,7 @@ class WebAudioController extends GetxController {
 
   void startListening() {
     isListening.value = true;
-    audioPlayer.play('assets/start.wav');
+    audioPlayer.play('assets/start.mp3');
     print('Started listening');
     lastWords.value = '';
     lastError.value = '';
@@ -83,7 +83,7 @@ class WebAudioController extends GetxController {
         'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
     lastWords.value = '${result.recognizedWords}';
     if (result.finalResult) {
-      audioPlayer.play('assets/done.wav');
+      audioPlayer.play('assets/done.mp3');
       stopListening();
       isListening.value = false;
       print('COMES IN SENDING TO QuestionDectection ');
