@@ -5,14 +5,19 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:quiver/iterables.dart';
 
 class DialogflowController extends GetxController {
   final dref = FirebaseDatabase.instance.ref('Pictos/es');
-  RxList dataList = [].obs;
   late DialogFlowtter dialogFlowtter;
   Rxn<bool> responseDone = Rxn<bool>();
   RxList firebaseIdentifiers = [].obs;
-  RxList dataMapList = [].obs;
+  RxList<Map<String, String>> dataMapList = RxList<Map<String, String>>();
+   RxList<List<Map<String, String>>> subDataMapList = [
+    [
+      {'label': '', 'url': ''}
+    ]
+  ].obs;
   @override
   void onInit() {
     super.onInit();
@@ -61,40 +66,54 @@ class DialogflowController extends GetxController {
 
   Future<void> getData() async {
     print('in getData ');
-    firebaseIdentifiers.forEach((identifier) async {
-      print('individaul identifier : $identifier');
-    });
+    // firebaseIdentifiers.forEach((identifier) async {
+    //   print('individaul identifier : $identifier');
+    // });
 
-    print(
-        'LENGTH OF THE LIST ++++++++++++++++++++++++ ${firebaseIdentifiers.length}');
+    // print(
+    //     'LENGTH OF THE LIST ++++++++++++++++++++++++ ${firebaseIdentifiers.length}');
 
     await dref.once().then((value) {
       for (int i = 0; i < firebaseIdentifiers.length; i++) {
-        print('Printed $i');
+        // print('Printed $i');
 
-        print(
-            'KEY  - ${value.snapshot.child('${firebaseIdentifiers[i]}').key} + ${value.snapshot.child('${firebaseIdentifiers[i]}').child('picto').value.toString()}');
+        // print(
+        //     'KEY  - ${value.snapshot.child('${firebaseIdentifiers[i]}').key} + ${value.snapshot.child('${firebaseIdentifiers[i]}').child('picto').value.toString()}');
         dataMapList.add({
-          'key': value.snapshot.child('${firebaseIdentifiers[i]}').key,
+          'key':
+              value.snapshot.child('${firebaseIdentifiers[i]}').key.toString(),
           'label': value.snapshot
               .child('${firebaseIdentifiers[i]}')
               .child('nombre')
-              .value,
+              .value
+              .toString(),
           'url': value.snapshot
               .child('${firebaseIdentifiers[i]}')
               .child('picto')
-              .value,
+              .value
+              .toString(),
         });
       }
     });
-    print('Data List : ' + dataMapList.toString());
+    // print('Data List : ' + dataMapList.toString());
+
+    final mySubList = partition(dataMapList, 4).toList();
+    subDataMapList.value = List.from(mySubList);
+    print('\n\n\nSub Data List : ' + subDataMapList.length.toString());
+
+    print('ZZZZZZZZZZZZZZZZZZZZz 000 ${subDataMapList[0][0]['label']}');
+    // subDataMapList.forEach((element) {
+    //   print(element);
+    // });
+    // final mySubList = partition(dataMapList, 4);
+    // subDataMapList.value = List.from(mySubList.toList());
+
     if (dataMapList[0]['label'] == null) {
       Get.snackbar('Try Again', 'No Data Found', backgroundColor: Colors.white);
       showWaiting.value = false;
     } else {
       responseDone.value = true;
       showWaiting.value = false;
-      tempLength.value = 4;
     }
   }
 

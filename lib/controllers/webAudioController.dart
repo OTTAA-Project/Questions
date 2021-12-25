@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
 import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
@@ -20,9 +21,10 @@ class WebAudioController extends GetxController {
   RxString lastError = ''.obs;
   RxString lastStatus = ''.obs;
   RxString _currentLocaleId = ''.obs;
-  final SpeechToText speech = SpeechToText();
   RxBool isListening = false.obs;
 
+  final AudioCache audioPlayer = AudioCache();
+  final SpeechToText speech = SpeechToText();
   final cQuestions = Get.put(QuestionDetection());
   final cDialogflow = Get.put(DialogflowController());
   @override
@@ -46,21 +48,20 @@ class WebAudioController extends GetxController {
 
   void startListening() {
     isListening.value = true;
-
-    _logEvent('start listening');
+    audioPlayer.play('assets/start.wav');
     print('Started listening');
     lastWords.value = '';
     lastError.value = '';
     speech.listen(
         onResult: resultListener,
-        listenFor: Duration(seconds: 5),
-        pauseFor: Duration(seconds: 5),
+        listenFor: Duration(seconds: 4),
+        pauseFor: Duration(seconds: 4),
         partialResults: true,
         localeId: 'es_AR',
         onSoundLevelChange: soundLevelListener,
         cancelOnError: true,
         onDevice: true,
-        listenMode: ListenMode.confirmation);
+        listenMode: ListenMode.deviceDefault);
   }
 
   void stopListening() {
@@ -82,6 +83,9 @@ class WebAudioController extends GetxController {
         'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
     lastWords.value = '${result.recognizedWords}';
     if (result.finalResult) {
+      audioPlayer.play('assets/done.wav');
+      stopListening();
+      isListening.value = false;
       print('COMES IN SENDING TO QuestionDectection ');
       bool result = cQuestions.isYesNo(lastWords.value);
       if (result) {
