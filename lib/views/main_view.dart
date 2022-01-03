@@ -281,7 +281,9 @@ class _MainViewState extends State<MainView> {
                       LayoutBuilder(builder: (_, constraints) {
                         return Container(
                           height: 80, // 80
-                          width: 200, // 130
+                          width: cDialogflow.isButtonShowed.value
+                              ? 200
+                              : 130, // 130
                           decoration: BoxDecoration(
                             color: Color(0xFFBB86FC),
                             borderRadius: BorderRadius.only(
@@ -324,12 +326,22 @@ class _MainViewState extends State<MainView> {
                                         log('TApped WINDOWS ');
                                         if (cWebAudioController
                                             .isListening.value) {
-                                          // cWebAudioController.stopListening();
-                                          // showWaiting.value = true;
-                                          // tempLength.value = 0;
                                         } else {
                                           cWebAudioController.startListening();
-                                          // cWebAudio.isYesNoBool.value = true;
+                                          cDialogflow.subDataMapList.value = [
+                                            [
+                                              {'label': '', 'url': ''}
+                                            ],
+                                            [
+                                              {'label': '', 'url': ''}
+                                            ],
+                                            [
+                                              {'label': '', 'url': ''}
+                                            ],
+                                            [
+                                              {'label': '', 'url': ''}
+                                            ]
+                                          ];
                                           cDialogflow.dataMapList.value = [];
                                         }
                                       },
@@ -347,6 +359,9 @@ class _MainViewState extends State<MainView> {
                                         log('TApped ');
 
                                         if (!cSpeech.recognizing.value) {
+                                          // cDialogflow.subDataMapList.value = [
+                                          //   [{}]
+                                          // ];
                                           cSpeech.streamingRecognize();
                                           isYesNo = cQuestions
                                               .isYesNo(cSpeech.text.value);
@@ -374,32 +389,44 @@ class _MainViewState extends State<MainView> {
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: 100,
-                        top: 10,
-                        child: Container(
-                          height: 60.0,
-                          width: 120.0,
-                          child: FittedBox(
-                            child: FloatingActionButton(
-                              backgroundColor: Color(0xFF03DAC5),
-                              onPressed: () {
-                                log('Pressed More Button');
-                                cDialogflow.subDataMapList[initIndex.value + 1]
-                                            .length ==
-                                        4
-                                    ? initIndex.value++
-                                    : initIndex.value = 0;
-                              },
-                              child: Icon(
-                                Icons.add,
-                                size: 20.sp,
-                                color: Colors.black,
+                      cDialogflow.isButtonShowed.value
+                          ? Positioned(
+                              left: 100,
+                              top: 10,
+                              child: Container(
+                                height: 60.0,
+                                width: 120.0,
+                                child: FittedBox(
+                                  child: FloatingActionButton(
+                                    backgroundColor: Color(0xFF00a693),
+                                    onPressed: () {
+                                      log('Pressed More Button');
+                                      log('Next Length : ${cDialogflow.subDataMapList[initIndex.value + 1].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value + 1]}');
+                                      log('Current Length : ${cDialogflow.subDataMapList[initIndex.value].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value]}');
+                                      log('Current Index : ${initIndex.value}');
+
+                                      if (cDialogflow
+                                              .subDataMapList[
+                                                  initIndex.value + 1]
+                                              .length ==
+                                          4) {
+                                        log('IF SELECTED');
+                                        initIndex.value++;
+                                      } else {
+                                        log('ELSE SELECTED');
+                                        initIndex.value = 0;
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 20.sp,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
+                            )
+                          : SizedBox(),
                     ],
                   ),
                 ),

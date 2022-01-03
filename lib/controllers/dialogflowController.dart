@@ -13,7 +13,7 @@ class DialogflowController extends GetxController {
   Rxn<bool> responseDone = Rxn<bool>();
   RxList firebaseIdentifiers = [].obs;
   RxList<Map<String, String>> dataMapList = RxList<Map<String, String>>();
-   RxList<List<Map<String, String>>> subDataMapList = [
+  RxList<List<Map<String, String>>> subDataMapList = [
     [
       {'label': '', 'url': ''}
     ]
@@ -23,6 +23,7 @@ class DialogflowController extends GetxController {
     super.onInit();
     log('called from DialogFlow');
     firebaseIdentifiers.value = [];
+    // subDataMapList.value = [];
     initDF();
   }
 
@@ -57,28 +58,37 @@ class DialogflowController extends GetxController {
             QueryInput(text: TextInput(text: message, languageCode: 'es')));
     if (response.message == null) return;
 
-    print('CHECKING RESPONSE _________ ++++ _____ +++ ${response.text}');
-    firebaseIdentifiers.value =
-        List.from(response.text!.trim().split(',').toList());
+    print('CHECKING RESPONSE _________ ++++ _____ +++${response.text}');
+    // firebaseIdentifiers.value =
+    //     List.from(response.text!.trim().split(',').toList());
 
+    for (var str in response.text!.trim().split(',').toList()) {
+      if (str != "") {
+        log('NOT EMPTY');
+        firebaseIdentifiers.add(str);
+      } else {
+        log('EMPTY');
+      }
+    }
+    print('BEFORE IDENTIFIERS : $firebaseIdentifiers');
     getData();
   }
 
   Future<void> getData() async {
     print('in getData ');
-    // firebaseIdentifiers.forEach((identifier) async {
-    //   print('individaul identifier : $identifier');
-    // });
+    firebaseIdentifiers.forEach((identifier) async {
+      print('individaul identifier : $identifier');
+    });
 
-    // print(
-    //     'LENGTH OF THE LIST ++++++++++++++++++++++++ ${firebaseIdentifiers.length}');
+    print(
+        'LENGTH OF THE LIST ++++++++++++++++++++++++ ${firebaseIdentifiers.length}');
 
     await dref.once().then((value) {
       for (int i = 0; i < firebaseIdentifiers.length; i++) {
         // print('Printed $i');
 
-        // print(
-        //     'KEY  - ${value.snapshot.child('${firebaseIdentifiers[i]}').key} + ${value.snapshot.child('${firebaseIdentifiers[i]}').child('picto').value.toString()}');
+        print(
+            '[[[[[[[ KEY  - ${value.snapshot.child('${firebaseIdentifiers[i]}').key}\n ${value.snapshot.child('${firebaseIdentifiers[i]}').child('picto').value.toString()} \n  ${value.snapshot.child('${firebaseIdentifiers[i]}').child('nombre').value.toString()}]]]]]]]');
         dataMapList.add({
           'key':
               value.snapshot.child('${firebaseIdentifiers[i]}').key.toString(),
@@ -99,14 +109,14 @@ class DialogflowController extends GetxController {
 
     final mySubList = partition(dataMapList, 4).toList();
     subDataMapList.value = List.from(mySubList);
-    print('\n\n\nSub Data List : ' + subDataMapList.length.toString());
 
-    print('ZZZZZZZZZZZZZZZZZZZZz 000 ${subDataMapList[0][0]['label']}');
-    // subDataMapList.forEach((element) {
-    //   print(element);
-    // });
-    // final mySubList = partition(dataMapList, 4);
-    // subDataMapList.value = List.from(mySubList.toList());
+    print('\n\n\nSub Data List : ' +
+        subDataMapList.length.toString() +
+        '$subDataMapList');
+    isButtonShowed.value = subDataMapList.length > 0 && subDataMapList[1].length == 4;
+    subDataMapList.forEach((element) {
+      print(element);
+    });
 
     if (dataMapList[0]['label'] == null) {
       Get.snackbar('Try Again', 'No Data Found', backgroundColor: Colors.white);
@@ -117,6 +127,7 @@ class DialogflowController extends GetxController {
     }
   }
 
+  RxBool isButtonShowed = false.obs;
   @override
   void dispose() {
     dialogFlowtter.dispose();

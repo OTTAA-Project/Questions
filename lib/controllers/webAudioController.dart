@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
 import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -48,7 +46,7 @@ class WebAudioController extends GetxController {
 
   void startListening() {
     isListening.value = true;
-    audioPlayer.play('assets/start.mp3');
+    audioPlayer.play('assets/start.mp3', isLocal: true);
     print('Started listening');
     lastWords.value = '';
     lastError.value = '';
@@ -83,7 +81,7 @@ class WebAudioController extends GetxController {
         'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
     lastWords.value = '${result.recognizedWords}';
     if (result.finalResult) {
-      audioPlayer.play('assets/done.mp3');
+      audioPlayer.play('assets/done.mp3', isLocal: true);
       stopListening();
       isListening.value = false;
       print('COMES IN SENDING TO QuestionDectection ');
@@ -93,7 +91,6 @@ class WebAudioController extends GetxController {
         print('Yes NO Question');
       } else {
         isYesNoBool.value = true;
-        // tempLength.value = 0;
         cDialogflow.sendMessage(lastWords.value);
       }
     }
