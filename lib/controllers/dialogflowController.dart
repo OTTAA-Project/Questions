@@ -76,6 +76,7 @@ class DialogflowController extends GetxController {
 
   Future<void> getData() async {
     print('in getData ');
+    subDataMapList.value = [];
     firebaseIdentifiers.forEach((identifier) async {
       print('individaul identifier : $identifier');
     });
@@ -109,11 +110,27 @@ class DialogflowController extends GetxController {
 
     final mySubList = partition(dataMapList, 4).toList();
     subDataMapList.value = List.from(mySubList);
-
+    subDataMapList[0][0]['key'] == 'NaN'
+        ? subDataMapList.value = [
+            [
+              {'key': '', 'label': '', 'url': ''}
+            ],
+            [
+              {'key': '', 'label': '', 'url': ''}
+            ],
+            [
+              {'key': '', 'label': '', 'url': ''}
+            ],
+            [
+              {'key': '', 'label': '', 'url': ''}
+            ],
+          ]
+        : null;
     print('\n\n\nSub Data List : ' +
         subDataMapList.length.toString() +
         '$subDataMapList');
-    isButtonShowed.value = subDataMapList.length > 0 && subDataMapList[1].length == 4;
+    isButtonShowed.value =
+        subDataMapList.length > 0 && subDataMapList[1].length == 4;
     subDataMapList.forEach((element) {
       print(element);
     });

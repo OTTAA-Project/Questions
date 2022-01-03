@@ -412,6 +412,9 @@ class _MainViewState extends State<MainView> {
                                           4) {
                                         log('IF SELECTED');
                                         initIndex.value++;
+                                      } else if (initIndex.value ==
+                                          cDialogflow.subDataMapList.length) {
+                                        initIndex.value = 0;
                                       } else {
                                         log('ELSE SELECTED');
                                         initIndex.value = 0;
