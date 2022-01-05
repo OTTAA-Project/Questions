@@ -97,9 +97,9 @@ class DialogflowController extends GetxController {
         {'key': '', 'label': '', 'url': ''}
       ],
     ];
-    firebaseIdentifiers.forEach((identifier) async {
-      print('individaul identifier : $identifier');
-    });
+    // firebaseIdentifiers.forEach((identifier) async {
+    //   print('individaul identifier : $identifier');
+    // });
 
     print(
         'LENGTH OF THE firebaseIdentifiers ++++++++++++++++++++++++ ${firebaseIdentifiers.length}');
@@ -149,7 +149,7 @@ class DialogflowController extends GetxController {
     print('\n\n\nSub Data List : ' +
         subDataMapList.length.toString() +
         ' -------- ' +
-        '$subDataMapList');
+        '$subDataMapList \n');
     subDataMapList.forEach((list) {
       log('LENGTH OF SUB LIST : ${list.length}');
     });
@@ -159,8 +159,6 @@ class DialogflowController extends GetxController {
     // subDataMapList.forEach((element) {
     //   print('$element \n');
     // });
-
-    Future.delayed(Duration(seconds: 1));
     if (dataMapList[0]['label'] == null) {
       Get.snackbar('Try Again', 'No Data Found', backgroundColor: Colors.white);
       showWaiting.value = false;

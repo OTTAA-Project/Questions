@@ -331,6 +331,7 @@ class _MainViewState extends State<MainView> {
                                           cWebAudioController.startListening();
                                           cDialogflow.isButtonShowed.value =
                                               false;
+                                          initIndex.value = 0;
                                           cDialogflow.subDataMapList.clear();
                                           // cDialogflow.dataMapList.clear();
                                           cDialogflow.subDataMapList.value = [
