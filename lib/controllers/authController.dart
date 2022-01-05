@@ -6,6 +6,7 @@ import 'package:questions_by_ottaa/bindings/allBindings.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';
 
 class AuthController extends GetxController {
+  
   final _googleSignin = GoogleSignIn(clientId: _clientId);
   var currentUser = Rx<GoogleSignInAccount?>(null);
   RxBool isLoggedin = false.obs;
@@ -14,7 +15,8 @@ class AuthController extends GetxController {
 
   @override
   void onInit() {
-    // isAlreadyLoggedin();
+    isAlreadyLoggedin();
+    
     super.onInit();
   }
 
@@ -29,6 +31,7 @@ class AuthController extends GetxController {
   }
 
   isAlreadyLoggedin() async {
+
     final result = await _googleSignin.signInSilently();
     isLoggedin.value = result != null ? true : false;
   }

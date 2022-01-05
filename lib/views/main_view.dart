@@ -140,7 +140,7 @@ class _MainViewState extends State<MainView> {
                                                   ],
                                                 ),
                                               )
-                                            : cDialogflow.responseDone.value !=
+                                            : cDialogflow.responseDone.value ==
                                                         true &&
                                                     showWaiting.value
                                                 ? Container(
@@ -328,6 +328,10 @@ class _MainViewState extends State<MainView> {
                                             .isListening.value) {
                                         } else {
                                           cWebAudioController.startListening();
+                                          cDialogflow.isButtonShowed.value =
+                                              false;
+                                          cDialogflow.subDataMapList.clear();
+                                          cDialogflow.dataMapList.clear();
                                           cDialogflow.subDataMapList.value = [
                                             [
                                               {'label': '', 'url': ''}
@@ -342,7 +346,6 @@ class _MainViewState extends State<MainView> {
                                               {'label': '', 'url': ''}
                                             ]
                                           ];
-                                          cDialogflow.dataMapList.value = [];
                                         }
                                       },
                                       child: Icon(

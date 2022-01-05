@@ -49,6 +49,7 @@ class DialogflowController extends GetxController {
   }
 
   sendMessage(String text) async {
+    firebaseIdentifiers.clear();
     if (text.isEmpty) return;
 
     final message = text.split('\n').last;
@@ -76,7 +77,24 @@ class DialogflowController extends GetxController {
 
   Future<void> getData() async {
     print('in getData ');
-    subDataMapList.value = [];
+    // firebaseIdentifiers.clear();
+
+    dataMapList.clear();
+    subDataMapList.clear();
+    subDataMapList.value = [
+      [
+        {'key': '', 'label': '', 'url': ''}
+      ],
+      [
+        {'key': '', 'label': '', 'url': ''}
+      ],
+      [
+        {'key': '', 'label': '', 'url': ''}
+      ],
+      [
+        {'key': '', 'label': '', 'url': ''}
+      ],
+    ];
     firebaseIdentifiers.forEach((identifier) async {
       print('individaul identifier : $identifier');
     });
@@ -106,6 +124,7 @@ class DialogflowController extends GetxController {
         });
       }
     });
+
     // print('Data List : ' + dataMapList.toString());
 
     final mySubList = partition(dataMapList, 4).toList();
@@ -134,7 +153,7 @@ class DialogflowController extends GetxController {
     subDataMapList.forEach((element) {
       print(element);
     });
-
+    Future.delayed(Duration(seconds: 1));
     if (dataMapList[0]['label'] == null) {
       Get.snackbar('Try Again', 'No Data Found', backgroundColor: Colors.white);
       showWaiting.value = false;

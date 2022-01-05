@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class MainViewController extends GetxController {
   @override
   void onInit() {
-    log('onInit Called');
+    log('onInit Called MainViewController');
     super.onInit();
   }
 
