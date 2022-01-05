@@ -77,10 +77,12 @@ class DialogflowController extends GetxController {
 
   Future<void> getData() async {
     print('in getData ');
-    // firebaseIdentifiers.clear();
-
     dataMapList.clear();
     subDataMapList.clear();
+
+    log('getData():dataMapList: ${dataMapList} ');
+    log('getData(): subDataMapList: ${subDataMapList}');
+
     subDataMapList.value = [
       [
         {'key': '', 'label': '', 'url': ''}
@@ -100,12 +102,10 @@ class DialogflowController extends GetxController {
     });
 
     print(
-        'LENGTH OF THE LIST ++++++++++++++++++++++++ ${firebaseIdentifiers.length}');
+        'LENGTH OF THE firebaseIdentifiers ++++++++++++++++++++++++ ${firebaseIdentifiers.length}');
 
     await dref.once().then((value) {
       for (int i = 0; i < firebaseIdentifiers.length; i++) {
-        // print('Printed $i');
-
         print(
             '[[[[[[[ KEY  - ${value.snapshot.child('${firebaseIdentifiers[i]}').key}\n ${value.snapshot.child('${firebaseIdentifiers[i]}').child('picto').value.toString()} \n  ${value.snapshot.child('${firebaseIdentifiers[i]}').child('nombre').value.toString()}]]]]]]]');
         dataMapList.add({
@@ -125,10 +125,10 @@ class DialogflowController extends GetxController {
       }
     });
 
-    // print('Data List : ' + dataMapList.toString());
-
     final mySubList = partition(dataMapList, 4).toList();
     subDataMapList.value = List.from(mySubList);
+    log('${subDataMapList.length}');
+
     subDataMapList[0][0]['key'] == 'NaN'
         ? subDataMapList.value = [
             [
@@ -145,14 +145,21 @@ class DialogflowController extends GetxController {
             ],
           ]
         : null;
+
     print('\n\n\nSub Data List : ' +
         subDataMapList.length.toString() +
+        ' -------- ' +
         '$subDataMapList');
+    subDataMapList.forEach((list) {
+      log('LENGTH OF SUB LIST : ${list.length}');
+    });
+
     isButtonShowed.value =
         subDataMapList.length > 0 && subDataMapList[1].length == 4;
-    subDataMapList.forEach((element) {
-      print(element);
-    });
+    // subDataMapList.forEach((element) {
+    //   print('$element \n');
+    // });
+
     Future.delayed(Duration(seconds: 1));
     if (dataMapList[0]['label'] == null) {
       Get.snackbar('Try Again', 'No Data Found', backgroundColor: Colors.white);

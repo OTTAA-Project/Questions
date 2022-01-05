@@ -326,12 +326,13 @@ class _MainViewState extends State<MainView> {
                                         log('TApped WINDOWS ');
                                         if (cWebAudioController
                                             .isListening.value) {
+                                          // does nothing
                                         } else {
                                           cWebAudioController.startListening();
                                           cDialogflow.isButtonShowed.value =
                                               false;
                                           cDialogflow.subDataMapList.clear();
-                                          cDialogflow.dataMapList.clear();
+                                          // cDialogflow.dataMapList.clear();
                                           cDialogflow.subDataMapList.value = [
                                             [
                                               {'label': '', 'url': ''}
@@ -392,47 +393,48 @@ class _MainViewState extends State<MainView> {
                           ),
                         ),
                       ),
-                      cDialogflow.isButtonShowed.value
-                          ? Positioned(
-                              left: 100,
-                              top: 10,
-                              child: Container(
-                                height: 60.0,
-                                width: 120.0,
-                                child: FittedBox(
-                                  child: FloatingActionButton(
-                                    backgroundColor: Color(0xFF00a693),
-                                    onPressed: () {
-                                      log('Pressed More Button');
-                                      log('Next Length : ${cDialogflow.subDataMapList[initIndex.value + 1].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value + 1]}');
-                                      log('Current Length : ${cDialogflow.subDataMapList[initIndex.value].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value]}');
-                                      log('Current Index : ${initIndex.value}');
+                      if (cDialogflow.isButtonShowed.value)
+                        Positioned(
+                          left: 100,
+                          top: 10,
+                          child: Container(
+                            height: 60.0,
+                            width: 120.0,
+                            child: FittedBox(
+                              child: FloatingActionButton(
+                                backgroundColor: Color(0xFF00a693),
+                                onPressed: () {
+                                  log('Pressed More Button');
+                                  // log('Next Length : ${cDialogflow.subDataMapList[initIndex.value + 1].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value + 1]}');
+                                  // log('Current Length : ${cDialogflow.subDataMapList[initIndex.value].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value]}');
+                                  log('Current Index : ${initIndex.value}');
 
-                                      if (cDialogflow
-                                              .subDataMapList[
-                                                  initIndex.value + 1]
-                                              .length ==
-                                          4) {
-                                        log('IF SELECTED');
-                                        initIndex.value++;
-                                      } else if (initIndex.value ==
-                                          cDialogflow.subDataMapList.length) {
-                                        initIndex.value = 0;
-                                      } else {
-                                        log('ELSE SELECTED');
-                                        initIndex.value = 0;
-                                      }
-                                    },
-                                    child: Icon(
-                                      Icons.add,
-                                      size: 20.sp,
-                                      color: Colors.black,
-                                    ),
-                                  ),
+                                  if (initIndex.value + 1 ==
+                                      cDialogflow.subDataMapList.length) {
+                                    log('IF FIRST CALLED');
+                                    initIndex.value = 0;
+                                  } else if (cDialogflow
+                                          .subDataMapList[initIndex.value + 1]
+                                          .length ==
+                                      4) {
+                                    log('IF SELECTED');
+                                    initIndex.value++;
+                                  } else {
+                                    log('ELSE SELECTED');
+                                    initIndex.value = 0;
+                                  }
+                                },
+                                child: Icon(
+                                  Icons.add,
+                                  size: 20.sp,
+                                  color: Colors.black,
                                 ),
                               ),
-                            )
-                          : SizedBox(),
+                            ),
+                          ),
+                        )
+                      else
+                        SizedBox(),
                     ],
                   ),
                 ),
