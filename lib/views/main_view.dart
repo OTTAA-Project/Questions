@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -14,6 +15,7 @@ import 'package:questions_by_ottaa/controllers/sttController.dart';
 import 'package:questions_by_ottaa/controllers/ttsController.dart';
 import 'package:questions_by_ottaa/controllers/webAudioController.dart';
 import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
+import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/google_speech_view.dart';
@@ -140,8 +142,7 @@ class _MainViewState extends State<MainView> {
                                                   ],
                                                 ),
                                               )
-                                            : cDialogflow.responseDone.value ==
-                                                        true &&
+                                            : responseDone.value == true &&
                                                     showWaiting.value
                                                 ? Container(
                                                     height: 55.h,
@@ -329,11 +330,10 @@ class _MainViewState extends State<MainView> {
                                           // does nothing
                                         } else {
                                           cWebAudioController.startListening();
-                                          cDialogflow.isButtonShowed.value =
-                                              false;
+                                          AudioCache().play('start.mp3');
                                           initIndex.value = 0;
                                           cDialogflow.subDataMapList.clear();
-                                          // cDialogflow.dataMapList.clear();
+ 
                                           cDialogflow.subDataMapList.value = [
                                             [
                                               {'label': '', 'url': ''}
@@ -367,17 +367,19 @@ class _MainViewState extends State<MainView> {
                                           // cDialogflow.subDataMapList.value = [
                                           //   [{}]
                                           // ];
+                                          initIndex.value = 0;
                                           cSpeech.streamingRecognize();
-                                          isYesNo = cQuestions
-                                              .isYesNo(cSpeech.text.value);
-                                          isYesNo == true
-                                              ? null
-                                              : cDialogflow.sendMessage(
-                                                  cSpeech.text.value);
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  GoogleSpeechView());
+                                          AudioCache().play('start.mp3');
+                                          // isYesNo = cQuestions
+                                          //     .isYesNo(cSpeech.text.value);
+                                          // isYesNo == true
+                                          //     ? null
+                                          //     : cDialogflow.sendMessage(
+                                          //         cSpeech.text.value);
+                                          // showDialog(
+                                          //     context: context,
+                                          //     builder: (context) =>
+                                          //         GoogleSpeechView());
                                         } else {
                                           cSpeech.stopRecording();
                                         }

@@ -5,6 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
 import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
+import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -21,7 +22,6 @@ class WebAudioController extends GetxController {
   RxString _currentLocaleId = ''.obs;
   RxBool isListening = false.obs;
 
-  final audioPlayer = AudioPlayer();
   final SpeechToText speech = SpeechToText();
   final cQuestions = Get.put(QuestionDetection());
   final cDialogflow = Get.put(DialogflowController());
@@ -45,8 +45,9 @@ class WebAudioController extends GetxController {
   }
 
   void startListening() {
+    showWaiting.value = true;
+    cDialogflow.isButtonShowed.value = false;
     isListening.value = true;
-    audioPlayer.play('assets/start.mp3', isLocal: true);
     print('Started listening');
     lastWords.value = '';
     lastError.value = '';
@@ -63,6 +64,7 @@ class WebAudioController extends GetxController {
   }
 
   void stopListening() {
+    AudioCache().play('done.mp3');
     _logEvent('stop');
     speech.stop();
     isListening.value = false;
@@ -81,7 +83,9 @@ class WebAudioController extends GetxController {
         'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
     lastWords.value = '${result.recognizedWords}';
     if (result.finalResult) {
-      audioPlayer.play('assets/done.mp3', isLocal: true);
+      // audioPlayer.play('done.mp3');
+      AudioPlayer().play('done.mp3', isLocal: true);
+
       stopListening();
       isListening.value = false;
       print('COMES IN SENDING TO QuestionDectection ');
@@ -90,6 +94,7 @@ class WebAudioController extends GetxController {
         isYesNoBool.value = false;
         print('Yes NO Question');
       } else {
+        responseDone.value = true;
         isYesNoBool.value = true;
         cDialogflow.sendMessage(lastWords.value);
       }

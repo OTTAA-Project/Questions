@@ -1,17 +1,15 @@
 import 'dart:developer';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
-import 'package:questions_by_ottaa/controllers/ttsController.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:quiver/iterables.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

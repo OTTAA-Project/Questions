@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_speech/google_speech.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
@@ -19,7 +21,9 @@ class SttController extends GetxController {
   RxString errorString = ''.obs;
   StreamSubscription<List<int>>? _audioStreamSubscription;
   BehaviorSubject<List<int>>? _audioStream;
-
+  final audioPlayer = AudioCache();
+  // final webPlayer = AudioPlayer();
+  // final web = AudioPlayer();
   @override
   void onInit() {
     super.onInit();
@@ -29,6 +33,14 @@ class SttController extends GetxController {
   RxBool result = true.obs;
 
   Future<void> streamingRecognize() async {
+    cDialogflow.isButtonShowed.value = false;
+    // if (kIsWeb) {
+
+    //   print('WEB PLAYED ');
+    // } else
+    // AudioPlayer().play('assets/start.mp3');
+    // AudioCache().play('start.mp3');
+
     text.value = '';
     _audioStream = BehaviorSubject<List<int>>();
     _audioStreamSubscription = _recorder.audioStream.listen((event) {
@@ -60,40 +72,40 @@ class SttController extends GetxController {
 
     var responseText = '';
 
-    responseStream.listen(
-        (data) {
-          final currentText = data.results
-              .map((e) => e.alternatives.first.transcript)
-              .join('\n');
+    responseStream.listen((data) {
+      final currentText =
+          data.results.map((e) => e.alternatives.first.transcript).join('\n');
 
-          if (data.results.first.isFinal) {
-            responseText += '\n' + currentText;
+      if (data.results.first.isFinal) {
+        responseText += '\n' + currentText;
 
-            text.value = responseText;
-            recognizeFinished.value = true;
-          } else {
-            text.value = responseText + '\n' + currentText;
-            recognizeFinished.value = true;
-          }
-        },
+        text.value = responseText;
+        recognizeFinished.value = true;
+      } else {
+        text.value = responseText + '\n' + currentText;
+        recognizeFinished.value = true;
+      }
+    },
         cancelOnError: true,
         onError: (e) {
-          errorString.value = e.toString();
-        },
-        onDone: () async {
-          recognizing.value = false;
+      errorString.value = e.toString();
+    }, onDone: () async {
+      recognizing.value = false;
+      AudioCache().play('done.mp3');
 
-          result.value = qd.isYesNo(text.value);
-          if (result.value) {
-            isYesNoDetect.value = true;
-            log('It is a YES NO Question');
-          } else {
-            isYesNoDetect.value = false;
-            cDialogflow.sendMessage(text.value);
-            print('out from send message');
-            cDialogflow.getData();
-          }
-        });
+      result.value = qd.isYesNo(text.value);
+      if (result.value) {
+        isYesNoDetect.value = true;
+        log('It is a YES NO Question');
+        stopRecording();
+      } else {
+        isYesNoDetect.value = false;
+        cDialogflow.sendMessage(text.value);
+        print('out from send message');
+        cDialogflow.getData();
+        stopRecording();
+      }
+    });
   }
 
   RxBool isYesNoDetect = false.obs;

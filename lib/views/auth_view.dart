@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:questions_by_ottaa/bindings/allBindings.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';

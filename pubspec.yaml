@@ -26,7 +26,7 @@ dependencies:
   firebase_database: ^9.0.3  
   google_fonts: ^2.1.0
   google_sign_in: ^5.2.1
-  google_speech: ^2.0.1
+  google_speech: ^2.0.1 # for androids 
   
   flutter:
     sdk: flutter
