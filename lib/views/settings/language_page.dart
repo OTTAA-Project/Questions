@@ -30,28 +30,27 @@ class LanguagePage extends StatelessWidget {
                 height: 10,
                 color: Colors.grey[700],
               ),
-              Obx(
-                () => DropdownButton<String>(
-                  isExpanded: true,
-                  value: _.isEnglish.value ? 'English' : 'Spanish',
-                  iconSize: 20,
-                  elevation: 16,
-                  underline: Container(),
-                  onChanged: (newValue) {
-                    //todo: set value
-                    _.isEnglish.value = !_.isEnglish.value;
-                  },
-                  items: [
-                    DropdownMenuItem(
-                      child: Text('English'),
-                      value: 'English',
-                    ),
-                    DropdownMenuItem(
-                      child: Text('Spanish'),
-                      value: 'Spanish',
-                    ),
-                  ],
-                ),
+              DropdownButton<String>(
+                isExpanded: true,
+                // value: _.isEnglish.value ? 'English' : 'Spanish',
+                value: 'Spanish',
+                iconSize: 20,
+                elevation: 16,
+                underline: Container(),
+                onChanged: (newValue) {
+                  //todo: set value
+                  // _.isEnglish.value = !_.isEnglish.value;
+                },
+                items: [
+                  // DropdownMenuItem(
+                  //   child: Text('English'),
+                  //   value: 'English',
+                  // ),
+                  DropdownMenuItem(
+                    child: Text('Spanish'),
+                    value: 'Spanish',
+                  ),
+                ],
               ),
             ],
           ),

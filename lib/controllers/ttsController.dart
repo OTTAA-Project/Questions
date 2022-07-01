@@ -12,6 +12,7 @@ class TTSController extends GetxController {
   final tts = FlutterTts();
   String _language =
       Get.locale?.languageCode == null ? 'es-AR' : Get.locale!.languageCode;
+  late List<dynamic> availableTTS;
 
   String get languaje => this._language;
 
@@ -105,13 +106,14 @@ class TTSController extends GetxController {
   bool get isWeb => kIsWeb;
 
   @override
-  void onInit() {
+  void onInit() async {
     configureTTS();
+    availableTTS = await tts.getLanguages;
     super.onInit();
   }
 
   configureTTS() async {
-    print('configuring === TTS');
+    // print('configuring === TTS');
     await tts.setPitch(1);
     await tts.setLanguage('es-AR');
     await tts.awaitSpeakCompletion(true);

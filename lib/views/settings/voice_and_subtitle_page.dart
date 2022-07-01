@@ -144,28 +144,23 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                   value: _.ttsController.isSubtitleUppercase,
                 ),
                 Divider(),
-                Obx(
-                  () => DropdownButton<String>(
-                    isExpanded: true,
-                    value: _.isEnglish.value ? 'English' : 'Spanish',
-                    iconSize: 20,
-                    elevation: 16,
-                    underline: Container(),
-                    onChanged: (newValue) {
-                      //todo: set value
-                      _.isEnglish.value = !_.isEnglish.value;
-                    },
-                    items: [
-                      DropdownMenuItem(
-                        child: Text('English'),
-                        value: 'English',
-                      ),
-                      DropdownMenuItem(
-                        child: Text('Spanish'),
-                        value: 'Spanish',
-                      ),
-                    ],
-                  ),
+                DropdownButton<String>(
+                  isExpanded: true,
+                  value: 'es-ES',
+                  iconSize: 20,
+                  elevation: 16,
+                  underline: Container(),
+                  onChanged: (newValue) {
+                    //todo: set value
+                    _.ttsController.languaje = newValue;
+                  },
+                  items: _.ttsController.availableTTS
+                      .map<DropdownMenuItem<String>>((value) {
+                    return DropdownMenuItem<String>(
+                      value: value.toString(),
+                      child: Text(value.toString()),
+                    );
+                  }).toList(),
                 ),
                 Divider(),
               ],

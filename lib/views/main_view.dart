@@ -33,7 +33,7 @@ class _MainViewState extends State<MainView> {
   final cWebAudio = Get.put(WebAudioController());
   final cDialogflow = Get.put(DialogflowController());
   final cWebAudioController = Get.put(WebAudioController());
-  final TTSController ttsController = Get.find<TTSController>();
+  final TTSController ttsController = Get.put(TTSController());
   RxInt initIndex = 0.obs;
   bool isYesNo = false;
 
