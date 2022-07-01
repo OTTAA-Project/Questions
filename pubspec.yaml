@@ -20,10 +20,9 @@ dependencies:
   sound_stream: ^0.3.0
   rxdart: ^0.27.3
   audioplayers: ^0.20.1
-
   dialog_flowtter: ^0.3.1
   firebase_core: ^1.10.5
-  firebase_database: ^9.0.3  
+  firebase_database: ^9.0.3
   google_fonts: ^2.1.0
   google_sign_in: ^5.2.1
   google_speech: ^2.0.1 # for androids 

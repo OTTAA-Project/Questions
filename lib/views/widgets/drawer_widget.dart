@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/controllers/mainViewController.dart';
+import 'package:questions_by_ottaa/controllers/ttsController.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/settings/settings_controller.dart';
@@ -100,6 +102,7 @@ class DrawerWidget extends GetView<MainViewController> {
                           icon: Icons.settings,
                           title: 'configuration',
                           onTap: () {
+                            final v2 = Get.lazyPut(() => TTSController());
                             final v = Get.lazyPut(() => SettingsController());
                             Get.to(SettingsPage());
                           },

@@ -1,7 +1,6 @@
 // ignore_for_file: dead_code, must_be_immutable
 
 import 'dart:developer';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
@@ -34,6 +33,7 @@ class _MainViewState extends State<MainView> {
   final cWebAudio = Get.put(WebAudioController());
   final cDialogflow = Get.put(DialogflowController());
   final cWebAudioController = Get.put(WebAudioController());
+  final TTSController ttsController = Get.find<TTSController>();
   RxInt initIndex = 0.obs;
   bool isYesNo = false;
 
@@ -99,8 +99,8 @@ class _MainViewState extends State<MainView> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
                                               cSpeech.text == ''
-                                                  ? '${cWebAudioController.lastWords.value}'
-                                                  : '${cSpeech.text.value}',
+                                                  ? '${ttsController.isCustomSubtitle ?  cWebAudioController.lastWords.value.toUpperCase() : cWebAudioController.lastWords.value.toLowerCase() }'
+                                                  : '${ttsController.isCustomSubtitle ? cSpeech.text.value.toUpperCase() : cSpeech.text.value.toLowerCase()}',
                                               maxLines: 2,
                                               overflow: TextOverflow.visible,
                                               style: TextStyle(
@@ -518,7 +518,7 @@ class YesNoWidget extends StatelessWidget {
             ),
             Container(
               child: Text(
-                ans!.toUpperCase(),
+                cTTS.isCustomSubtitle ? ans!.toUpperCase() : ans!.toLowerCase(),
                 style: TextStyle(fontSize: 15.sp),
               ),
             )
