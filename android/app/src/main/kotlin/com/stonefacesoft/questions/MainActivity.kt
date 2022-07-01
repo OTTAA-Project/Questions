@@ -1,4 +1,4 @@
-package com.itszuraiz.questions
+package com.stonefacesoft.questions
 
 import io.flutter.embedding.android.FlutterActivity
 

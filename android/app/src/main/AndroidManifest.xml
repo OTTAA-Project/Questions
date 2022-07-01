@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.itszuraiz.questions">
+    package="com.stonefacesoft.questions">
 
 <!-- Permissions for Speech to Text -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>

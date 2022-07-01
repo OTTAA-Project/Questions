@@ -46,7 +46,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.itszuraiz.questions"
+        applicationId "com.stonefacesoft.questions"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()

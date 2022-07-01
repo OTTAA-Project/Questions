@@ -4,7 +4,6 @@ import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,9 +15,8 @@ import 'package:questions_by_ottaa/controllers/ttsController.dart';
 import 'package:questions_by_ottaa/controllers/webAudioController.dart';
 import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
-import 'package:questions_by_ottaa/views/google_speech_view.dart';
+import 'package:questions_by_ottaa/views/widgets/drawer_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MainView extends StatefulWidget {
@@ -38,8 +36,10 @@ class _MainViewState extends State<MainView> {
   final cWebAudioController = Get.put(WebAudioController());
   RxInt initIndex = 0.obs;
   bool isYesNo = false;
+
   @override
   Widget build(BuildContext context) {
+    final verticalSize = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -62,6 +62,7 @@ class _MainViewState extends State<MainView> {
             )
           ],
         ),
+        drawer: DrawerWidget(),
         body: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onVerticalDragUpdate: (DragUpdateDetails dd) {
@@ -78,188 +79,181 @@ class _MainViewState extends State<MainView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                        flex: 5,
-                        child: Container(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              var screenHeight = constraints.maxHeight;
-                              var screenWidth = constraints.maxWidth;
-                              return SingleChildScrollView(
-                                  child: Obx(
+                      flex: 5,
+                      child: Container(
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            var screenHeight = constraints.maxHeight;
+                            var screenWidth = constraints.maxWidth;
+                            return SingleChildScrollView(
+                              child: Obx(
                                 () => Center(
                                   child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Center(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                cSpeech.text == ''
-                                                    ? '${cWebAudioController.lastWords.value}'
-                                                    : '${cSpeech.text.value}',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.visible,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: kPrimaryFont,
-                                                    fontSize: 16.0.sp),
-                                              ),
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              cSpeech.text == ''
+                                                  ? '${cWebAudioController.lastWords.value}'
+                                                  : '${cSpeech.text.value}',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.visible,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: kPrimaryFont,
+                                                  fontSize: 16.0.sp),
                                             ),
                                           ),
                                         ),
-                                        !cWebAudio.isYesNoBool.value ||
-                                                cSpeech.isYesNoDetect.value
-                                            ? Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    YesNoWidget(
-                                                      ans: 'SI',
-                                                      icon: 'yes',
-                                                      iconColor: Colors.green,
-                                                      screenWidth: screenWidth,
-                                                      screenHeight:
-                                                          screenHeight,
-                                                    ),
-                                                    YesNoWidget(
-                                                      ans: 'NO',
-                                                      icon: 'no',
-                                                      iconColor: Colors.red,
-                                                      screenWidth: screenWidth,
-                                                      screenHeight:
-                                                          screenHeight,
-                                                    )
-                                                  ],
+                                      ),
+                                      !cWebAudio.isYesNoBool.value ||
+                                              cSpeech.isYesNoDetect.value
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 15.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  YesNoWidget(
+                                                    ans: 'SI',
+                                                    icon: 'yes',
+                                                    iconColor: Colors.green,
+                                                    screenWidth: screenWidth,
+                                                    screenHeight: screenHeight,
+                                                  ),
+                                                  YesNoWidget(
+                                                    ans: 'NO',
+                                                    icon: 'no',
+                                                    iconColor: Colors.red,
+                                                    screenWidth: screenWidth,
+                                                    screenHeight: screenHeight,
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          : responseDone.value == true &&
+                                                  showWaiting.value
+                                              ? Container(
+                                                  height: 55.h,
+                                                  width: 98.w,
+                                                  child: Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                )
+                                              // : Text('show four widgets')
+                                              : Container(
+                                                  height: 55.h,
+                                                  width: 98.w,
+                                                  child:
+                                                      cDialogflow.subDataMapList[
+                                                                      initIndex
+                                                                          .value]
+                                                                  [
+                                                                  0]['label'] ==
+                                                              ''
+                                                          ? SizedBox()
+                                                          : Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                AnswerCard(
+                                                                  ans: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][0]['label'],
+                                                                  icon: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][0]['url'],
+                                                                  iconColor:
+                                                                      Colors
+                                                                          .blue,
+                                                                  screenWidth: Get
+                                                                          .size
+                                                                          .width *
+                                                                      0.81,
+                                                                  screenHeight:
+                                                                      screenHeight,
+                                                                ),
+                                                                AnswerCard(
+                                                                  ans: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][1]['label'],
+                                                                  icon: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][1]['url'],
+                                                                  iconColor:
+                                                                      Colors
+                                                                          .blue,
+                                                                  screenWidth: Get
+                                                                          .size
+                                                                          .width *
+                                                                      0.81,
+                                                                  screenHeight:
+                                                                      screenHeight,
+                                                                ),
+                                                                AnswerCard(
+                                                                  ans: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][2]['label'],
+                                                                  icon: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][2]['url'],
+                                                                  iconColor:
+                                                                      Colors
+                                                                          .blue,
+                                                                  screenWidth: Get
+                                                                          .size
+                                                                          .width *
+                                                                      0.81,
+                                                                  screenHeight:
+                                                                      screenHeight,
+                                                                ),
+                                                                AnswerCard(
+                                                                  ans: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][3]['label'],
+                                                                  icon: cDialogflow
+                                                                          .subDataMapList[
+                                                                      initIndex
+                                                                          .value][3]['url'],
+                                                                  iconColor:
+                                                                      Colors
+                                                                          .blue,
+                                                                  screenWidth: Get
+                                                                          .size
+                                                                          .width *
+                                                                      0.81,
+                                                                  screenHeight:
+                                                                      screenHeight,
+                                                                ),
+                                                              ],
+                                                            ),
                                                 ),
-                                              )
-                                            : responseDone.value == true &&
-                                                    showWaiting.value
-                                                ? Container(
-                                                    height: 55.h,
-                                                    width: 98.w,
-                                                    child: Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    ),
-                                                  )
-                                                // : Text('show four widgets')
-                                                : Container(
-                                                    height: 55.h,
-                                                    width: 98.w,
-                                                    child: cDialogflow.subDataMapList[
-                                                                    initIndex
-                                                                        .value]
-                                                                [0]['label'] ==
-                                                            ''
-                                                        ? SizedBox()
-                                                        : Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              AnswerCard(
-                                                                ans: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [
-                                                                    0]['label'],
-                                                                icon: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [0]['url'],
-                                                                iconColor:
-                                                                    Colors.blue,
-                                                                screenWidth: Get
-                                                                        .size
-                                                                        .width *
-                                                                    0.81,
-                                                                screenHeight:
-                                                                    screenHeight,
-                                                              ),
-                                                              AnswerCard(
-                                                                ans: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [
-                                                                    1]['label'],
-                                                                icon: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [1]['url'],
-                                                                iconColor:
-                                                                    Colors.blue,
-                                                                screenWidth: Get
-                                                                        .size
-                                                                        .width *
-                                                                    0.81,
-                                                                screenHeight:
-                                                                    screenHeight,
-                                                              ),
-                                                              AnswerCard(
-                                                                ans: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [
-                                                                    2]['label'],
-                                                                icon: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [2]['url'],
-                                                                iconColor:
-                                                                    Colors.blue,
-                                                                screenWidth: Get
-                                                                        .size
-                                                                        .width *
-                                                                    0.81,
-                                                                screenHeight:
-                                                                    screenHeight,
-                                                              ),
-                                                              AnswerCard(
-                                                                ans: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [
-                                                                    3]['label'],
-                                                                icon: cDialogflow
-                                                                            .subDataMapList[
-                                                                        initIndex
-                                                                            .value]
-                                                                    [3]['url'],
-                                                                iconColor:
-                                                                    Colors.blue,
-                                                                screenWidth: Get
-                                                                        .size
-                                                                        .width *
-                                                                    0.81,
-                                                                screenHeight:
-                                                                    screenHeight,
-                                                              )
-                                                            ],
-                                                          ),
-                                                  )
-                                      ]),
+                                    ],
+                                  ),
                                 ),
-                              ));
-                            },
-                          ),
-                        )),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                     Expanded(
                       flex: 1,
                       child: Center(
@@ -333,7 +327,7 @@ class _MainViewState extends State<MainView> {
                                           AudioCache().play('start.mp3');
                                           initIndex.value = 0;
                                           cDialogflow.subDataMapList.clear();
- 
+
                                           cDialogflow.subDataMapList.value = [
                                             [
                                               {'label': '', 'url': ''}
@@ -430,7 +424,7 @@ class _MainViewState extends State<MainView> {
                                 child: Icon(
                                   Icons.add,
                                   size: 20.sp,
-                                  color: Colors.black,
+                                  color: addButtonClr,
                                 ),
                               ),
                             ),
@@ -440,6 +434,29 @@ class _MainViewState extends State<MainView> {
                         SizedBox(),
                     ],
                   ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 16,
+                child: Row(
+                  children: [
+                    const Text(
+                      'Powered by',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Image.asset(
+                      'assets/images/ottaa_logo_drawer.png',
+                      height: verticalSize * 0.05,
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -529,6 +546,7 @@ class AnswerCard extends StatelessWidget {
   String? ans;
 
   final cTTS = Get.put(TTSController());
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
