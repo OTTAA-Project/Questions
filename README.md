@@ -1,6 +1,6 @@
 ![image](https://ottaaproject.com/img/ottaa-project.svg)
 
-# Welcome to OTTAA's Universal Pictogram Flutter Widget#
+# Welcome to Questions, a multimodal communicator where you ask questions orally and get answers with Pictos#
 
 
 ## Web Page
