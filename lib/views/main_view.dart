@@ -46,21 +46,6 @@ class _MainViewState extends State<MainView> {
           title: Text('Questions'),
           backgroundColor: kColorAppbar,
           automaticallyImplyLeading: false,
-          actions: [
-            ActionChip(
-                shape: RoundedRectangleBorder(),
-                label: Text(
-                  'Logout',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  cAuth.logout();
-                  Get.off(() => AuthView());
-                }),
-            SizedBox(
-              width: 20.0,
-            )
-          ],
         ),
         drawer: DrawerWidget(),
         body: GestureDetector(
@@ -258,7 +243,7 @@ class _MainViewState extends State<MainView> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          'Toca el botón verde para hacer una pregunta',
+                          'Toca el micrófono y haz una pregunta',
                           style:
                               TextStyle(color: kPrimaryFont, fontSize: 17.0.sp),
                         ),
@@ -399,7 +384,7 @@ class _MainViewState extends State<MainView> {
                             width: 120.0,
                             child: FittedBox(
                               child: FloatingActionButton(
-                                backgroundColor: Color(0xFF00a693),
+                                backgroundColor: kOTTAAOrangeNew,
                                 onPressed: () {
                                   log('Pressed More Button');
                                   // log('Next Length : ${cDialogflow.subDataMapList[initIndex.value + 1].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value + 1]}');
@@ -424,7 +409,7 @@ class _MainViewState extends State<MainView> {
                                 child: Icon(
                                   Icons.add,
                                   size: 20.sp,
-                                  color: addButtonClr,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -437,7 +422,7 @@ class _MainViewState extends State<MainView> {
                 ),
               ),
               Positioned(
-                bottom: 0,
+                bottom: 10,
                 right: 16,
                 child: Row(
                   children: [

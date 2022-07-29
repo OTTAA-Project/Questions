@@ -54,7 +54,7 @@ class DrawerWidget extends GetView<MainViewController> {
                           ),
                           Image.asset(
                             'assets/images/ottaa_logo_drawer.png',
-                            height: verticalSize * 0.05,
+                            height: verticalSize * 0.09,
                           ),
                         ],
                       ),
@@ -71,7 +71,7 @@ class DrawerWidget extends GetView<MainViewController> {
                       children: [
                         ListTileWidget(
                           icon: Icons.volume_up,
-                          title: 'mute',
+                          title: 'Mute',
                           onTap: () async {
                             // _ttsController.setVolume =
                             //     controller.muteOrNot.value ? 0.8 : 0.0;
@@ -100,7 +100,7 @@ class DrawerWidget extends GetView<MainViewController> {
                         ),
                         ListTileWidget(
                           icon: Icons.settings,
-                          title: 'configuration',
+                          title: 'Settings',
                           onTap: () {
                             final v2 = Get.lazyPut(() => TTSController());
                             final v = Get.lazyPut(() => SettingsController());
@@ -109,7 +109,7 @@ class DrawerWidget extends GetView<MainViewController> {
                         ),
                         ListTileWidget(
                           icon: Icons.info_outline,
-                          title: 'tutorial'.tr,
+                          title: 'Tutorial'.tr,
                           onTap: () async {},
                         ),
                       ],
@@ -134,7 +134,7 @@ class DrawerWidget extends GetView<MainViewController> {
                         // ),
                         ListTileWidget(
                           icon: Icons.exit_to_app,
-                          title: 'sign out',
+                          title: 'Sign out',
                           onTap: () async {
                             cAuth.logout();
                             Get.offAll(() => AuthView());

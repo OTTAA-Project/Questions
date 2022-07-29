@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
             },
           ),
           title: Text(
-            'settings'.tr,
+            'Settings'.tr,
             style: TextStyle(
               color: Colors.black,
             ),
