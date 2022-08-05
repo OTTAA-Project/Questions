@@ -11,8 +11,12 @@ import 'package:questions_by_ottaa/views/main_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env");
+  Future.delayed(Duration(milliseconds: 1000));
+  await dotenv.load(fileName: "dotenv");
+  Future.delayed(Duration(milliseconds: 1000));
   WidgetsFlutterBinding.ensureInitialized();
+  print('here is the values 3');
+  print(dotenv.env['API_KEY']);
   kIsWeb
       ? await Firebase.initializeApp(
           options: FirebaseOptions(
