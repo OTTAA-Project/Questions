@@ -29,6 +29,7 @@ dependencies:
   
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -41,4 +42,5 @@ flutter:
     - images/
     - assets/dialog_flow_auth.json
     - assets/
+    - assets/.env
     - assets/images/
