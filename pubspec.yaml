@@ -42,5 +42,5 @@ flutter:
     - images/
     - assets/dialog_flow_auth.json
     - assets/
-    - assets/.env
+    - dotenv
     - assets/images/
