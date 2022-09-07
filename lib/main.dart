@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
+import 'package:questions_by_ottaa/controllers/splash_screen_controller.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';
+import 'package:questions_by_ottaa/views/splash_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 Future<void> main() async {
@@ -26,9 +28,11 @@ Future<void> main() async {
               projectId: dotenv.env['PROJECT_ID'] ?? 'add Proper Values',
               storageBucket:
                   dotenv.env['STORAGE_BUCKET'] ?? 'add Proper Values',
-              messagingSenderId: dotenv.env['MESSAGING_SENDER_ID'] ?? 'add Proper Values',
+              messagingSenderId:
+                  dotenv.env['MESSAGING_SENDER_ID'] ?? 'add Proper Values',
               appId: dotenv.env['APP_ID'] ?? 'add Proper Values',
-              measurementId: dotenv.env['MEASUREMENT_ID'] ?? 'add Proper Values'),
+              measurementId:
+                  dotenv.env['MEASUREMENT_ID'] ?? 'add Proper Values'),
         )
       : await Firebase.initializeApp();
 
@@ -50,14 +54,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
+  void initState()  {
     log('MY APP INITSTATE ');
-    auth.isAlreadyLoggedin();
-    log('${auth.isLoggedin.value}');
+    auth.isAlreadyLoggedIn();
+    log('${auth.isLoggedIn.value}');
     super.initState();
   }
 
   final auth = Get.put(AuthController());
+  final splashController = Get.put(SplashScreenController());
   Widget homeWidget = AuthView();
 
   @override
@@ -65,7 +70,7 @@ class _MyAppState extends State<MyApp> {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        home: auth.isLoggedin.value ? MainView() : AuthView(),
+        home: SplashScreen(),
       );
     });
   }
