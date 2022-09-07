@@ -42,21 +42,29 @@ class DialogflowController extends GetxController {
 
   initDF() async {
     isButtonShowed.value = false;
+    final String project_id = dotenv.env['PROJECT_ID'] ?? 'add Proper Values';
+    final String private_key_id =
+        dotenv.env['PRIVATE_KEY_ID'] ?? 'add Proper Values';
+    final String private_key =
+        dotenv.env['DIALOUGE_PRIVATE_KEY'] ?? 'add Proper Values';
+    final String client_email =
+        dotenv.env['CLIENT_EMAIL'] ?? 'add Proper Values';
+    final String client_id = dotenv.env['CLIENT_ID'] ?? 'add Proper Values';
+    final String client_x509_cert_url =
+        dotenv.env['CLIENT_X509_CERT_URL'] ?? 'add Proper Values';
     dialogFlowtter = await DialogFlowtter(
       credentials: DialogAuthCredentials.fromJson({
         "type": "service_account",
-        "project_id": dotenv.env['PROJECT_ID'] ?? 'add Proper Values',
-        "private_key_id": dotenv.env['PRIVATE_KEY_ID'] ?? 'add Proper Values',
-        "private_key":
-            dotenv.env['DIALOUGE_PRIVATE_KEY'] ?? 'add Proper Values',
-        "client_email": dotenv.env['CLIENT_EMAIL'] ?? 'add Proper Values',
-        "client_id": dotenv.env['CLIENT_ID'] ?? 'add Proper Values',
+        "project_id": project_id,
+        "private_key_id": private_key_id,
+        "private_key": private_key,
+        "client_email": client_email,
+        "client_id": client_id,
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url":
             "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url":
-            dotenv.env['CLIENT_X509_CERT_URL'] ?? 'add Proper Values',
+        "client_x509_cert_url": client_x509_cert_url,
       }),
     );
   }
