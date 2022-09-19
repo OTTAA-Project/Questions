@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,24 +15,26 @@ Future<void> main() async {
   kIsWeb
       ? await Firebase.initializeApp(
           options: FirebaseOptions(
-              apiKey: "AIzaSyDYckwyYFjys6DlADmLko462F47eaXBkX0",
-              authDomain: "questions-abd23.firebaseapp.com",
-              databaseURL:
-                  "https://questions-abd23-default-rtdb.firebaseio.com",
-              projectId: "questions-abd23",
-              storageBucket: "questions-abd23.appspot.com",
-              messagingSenderId: "122497661206",
-              appId: "1:122497661206:web:a8c8094bd59ca40ca1f837",
-              measurementId: "G-RMQ677H96F"),
+            apiKey: "AIzaSyDYckwyYFjys6DlADmLko462F47eaXBkX0",
+            authDomain: "questions-abd23.firebaseapp.com",
+            databaseURL: "https://questions-abd23-default-rtdb.firebaseio.com",
+            projectId: "questions-abd23",
+            storageBucket: "questions-abd23.appspot.com",
+            messagingSenderId: "122497661206",
+            appId: "1:122497661206:web:a8c8094bd59ca40ca1f837",
+            measurementId: "G-RMQ677H96F",
+          ),
         )
       : await Firebase.initializeApp();
 
-  SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
-      .whenComplete(
-    () => runApp(
-      const MyApp(),
-    ),
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+
+  if (kIsWeb) {
+    await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
+  }
+
+  runApp(
+    const MyApp(),
   );
 }
 
