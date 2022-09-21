@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:quiver/iterables.dart';
@@ -29,6 +30,7 @@ class DialogflowController extends GetxController {
     'Por favor, formulá una pregunta del tipo SI / NO',
     '¿Puedes decirlo otra vez?'
   ];
+
   @override
   void onInit() {
     super.onInit();
@@ -43,18 +45,18 @@ class DialogflowController extends GetxController {
     dialogFlowtter = await DialogFlowtter(
       credentials: DialogAuthCredentials.fromJson({
         "type": "service_account",
-        "project_id": "questions-abd23",
-        "private_key_id": "75123030cf4561cf26cf434242fe9a0322c5a51b",
+        "project_id": dotenv.env['PROJECT_ID'] ?? 'add Proper Values',
+        "private_key_id": dotenv.env['PRIVATE_KEY_ID'] ?? 'add Proper Values',
         "private_key":
-            "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCkHgC1SC4/qHHA\nDIArAFuyb8rnE6BQ1bZ0nAv8MCH7mEm5wIvrRfLrodZguhnxWIfpFXNbjXp4sBOk\njuGu83D2USs/CYNFwO97jgoCZ2A1LJPJ+ZDk2b7hYHFisIw5aIZ54s4JQ+fybhqJ\n7SjJt0sAAPrvyWq+e2McuadnrUy1d3l61ATG1mTkFm6nhTi3/c6jREWXxCbFVEmx\ndw7WIdUKlBuAxX83/btj5QxZP4hX1rR9FDPU7t1PsfQ+1a2afTM1P4QoB9QvuNZC\nmndITamIHoibxE7XsccWmCyPtl+LD+paXSEhvyhxw3cVYgM+8MWc7i+6KNwJy27R\nyUw8tL5PAgMBAAECggEAOGAoDR3I6UwjGv4QTvU2CpMVZ5BZ2zq2jNMH2O7t1X/I\nH5tRVRX3rtKukhaLj9jCAyK/uDzey7NsY/RC+Tad4LccPHC3m8/9U/uEW7QIG+v+\nrnxgtgRIaiIXgPe1i4jo3Ni4vv0JIcGJs0R45OXmSQ+NI66UUO+Qqc7qfxZMSe89\n5Grmq+LwNmGVIhRbkCw+ilHsgXV7y/y3dOfqnHaZpyqB9sLHxLOnJ8RZdaFrEczN\nOBLZDlEj57L5X4qK/vDB/HnF8gRR4FIGQt3GtcmdlpUl4rUhCz+7crZGlX6RDop7\nU7Q3N98+dhjOdPIL02Q8Gj7vZp4tb6ho3YlWWv8pjQKBgQDcgi0+32hS0XZkw2Mp\nSDYcJM2/gOYMfox/uTFKIcEQ3AwJiJqo58v/faG9z71IxfVWeGpbPv7YFE8bC90J\n5dZcj9Wrvgm0otq6mEwHLxn5gIfTuoSJJZRiM4nmxnZL6tPEhC/hMDzU+VrkYqwl\nxTsxkKboJ4zkLErEECH0dXDUfQKBgQC+iEfyCIxP1sG59wnH1f0rStNZ2w3Hv5of\nLjKLc17iDqfOdDi0Tp7Gy1LpWqdxLORRZEHC93fms5EYaD3nEgUXdfgBrvaXQv/u\nee/9yT7WuAIvLQdCSGn5EyMubRPEZlS+6sgHEWr3HPewHPoHPOH2EIIYx02/v7vf\nTIUH3glTuwKBgBEVEJY/TmCkE2zo6gSnsHFrtHiybp/nKdE3ModQqBk7Qr92Uqzl\nEBuhyubecgZyN3hUacDZ13o70IkC2UPMB1gyWFYuqafRueocpD8mOffnKh6P43aQ\nb7dP0M4M79sfvPoLV341c3D4RD9PGZDvf49uak+vyK1gdQZNTaQXeP8tAoGAVj8W\nYicgbJuIAggjc0QYX9p1JX2VFVBUEb01wA4vayC7MSdG68eS8+Xh2CPjG8X4bCd3\n5StkKRgrm+LD8q8jguUxqIFsujfn5iloS3cnbMbKplQ5rvVckxTongFeK08vGWTp\nutlVlBqWvC/BtjkHB/2dBl5hgWTnREM9DLyjeDUCgYAqRZyd5oENABTrbLuxAqiA\n/7jjoM06qzt635dSjnEqNsuyKe6Lb/qhAGcJIRklD4EdTKPEjwqQK6sPa4uZ4t1z\nY/wQUA2VEYx1K/GSK/Op1L7qKjZa4RbGXJHOhBK7EHNA8pYAVA2N7m/zDUD2QnPR\nmbbr/+Ng7hUJP2AU/8NAJw==\n-----END PRIVATE KEY-----\n",
-        "client_email": "questions-abd23@appspot.gserviceaccount.com",
-        "client_id": "103934915366475103170",
+            dotenv.env['DIALOUGE_PRIVATE_KEY'] ?? 'add Proper Values',
+        "client_email": dotenv.env['CLIENT_EMAIL'] ?? 'add Proper Values',
+        "client_id": dotenv.env['CLIENT_ID'] ?? 'add Proper Values',
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url":
             "https://www.googleapis.com/oauth2/v1/certs",
         "client_x509_cert_url":
-            "https://www.googleapis.com/robot/v1/metadata/x509/questions-abd23%40appspot.gserviceaccount.com"
+            dotenv.env['CLIENT_X509_CERT_URL'] ?? 'add Proper Values',
       }),
     );
   }
@@ -197,6 +199,7 @@ class DialogflowController extends GetxController {
   }
 
   RxBool isButtonShowed = false.obs;
+
   @override
   void dispose() {
     dialogFlowtter.dispose();

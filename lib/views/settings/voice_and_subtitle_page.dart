@@ -23,6 +23,42 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
+                  'VOZ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                Divider(
+                  height: 10,
+                  color: Colors.grey[700],
+                ),
+                Text(
+                  'Elige una voz según tu preferencia.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                DropdownButton<String>(
+                  isExpanded: true,
+                  value: 'es-AR',
+                  iconSize: 20,
+                  elevation: 16,
+                  underline: Container(),
+                  onChanged: (newValue) {
+                    //todo: set value
+                    _.ttsController.languaje = newValue;
+                  },
+                  items: _.ttsController.availableTTS
+                      .map<DropdownMenuItem<String>>((value) {
+                    return DropdownMenuItem<String>(
+                      value: value.toString(),
+                      child: Text(value.toString()),
+                    );
+                  }).toList(),
+                ),
+                Divider(),
+                Text(
                   'TEXT-TO-SPEECH-ENGINE',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -142,25 +178,6 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                       _.toggleIsSubtitleUppercase(value);
                   },
                   value: _.ttsController.isSubtitleUppercase,
-                ),
-                Divider(),
-                DropdownButton<String>(
-                  isExpanded: true,
-                  value: 'es-ES',
-                  iconSize: 20,
-                  elevation: 16,
-                  underline: Container(),
-                  onChanged: (newValue) {
-                    //todo: set value
-                    _.ttsController.languaje = newValue;
-                  },
-                  items: _.ttsController.availableTTS
-                      .map<DropdownMenuItem<String>>((value) {
-                    return DropdownMenuItem<String>(
-                      value: value.toString(),
-                      child: Text(value.toString()),
-                    );
-                  }).toList(),
                 ),
                 Divider(),
               ],
