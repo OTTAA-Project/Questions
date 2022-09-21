@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
+import 'package:questions_by_ottaa/themes/app_theme.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -67,6 +68,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return GetMaterialApp(
+        theme: kAppTheme,
         debugShowCheckedModeBanner: false,
         home: auth.isLoggedin.value ? MainView() : AuthView(),
       );

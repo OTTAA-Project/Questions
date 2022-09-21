@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AuthView extends StatelessWidget {
   AuthView({Key? key}) : super(key: key);
