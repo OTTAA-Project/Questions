@@ -46,21 +46,6 @@ class _MainViewState extends State<MainView> {
           title: Text('Questions'),
           backgroundColor: kColorAppbar,
           automaticallyImplyLeading: false,
-          actions: [
-            ActionChip(
-                shape: RoundedRectangleBorder(),
-                label: Text(
-                  'Logout',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  cAuth.logout();
-                  Get.off(() => AuthView());
-                }),
-            SizedBox(
-              width: 20.0,
-            )
-          ],
         ),
         drawer: DrawerWidget(),
         body: GestureDetector(
@@ -89,8 +74,7 @@ class _MainViewState extends State<MainView> {
                               child: Obx(
                                 () => Center(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
@@ -98,29 +82,19 @@ class _MainViewState extends State<MainView> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
-                                              cSpeech.text == ''
-                                                  ? '${ttsController.isCustomSubtitle ?  cWebAudioController.lastWords.value.toUpperCase() : cWebAudioController.lastWords.value.toLowerCase() }'
-                                                  : '${ttsController.isCustomSubtitle ? cSpeech.text.value.toUpperCase() : cSpeech.text.value.toLowerCase()}',
+                                              cSpeech.text == '' ? '${ttsController.isCustomSubtitle ? cWebAudioController.lastWords.value.toUpperCase() : cWebAudioController.lastWords.value.toLowerCase()}' : '${ttsController.isCustomSubtitle ? cSpeech.text.value.toUpperCase() : cSpeech.text.value.toLowerCase()}',
                                               maxLines: 2,
                                               overflow: TextOverflow.visible,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: kPrimaryFont,
-                                                  fontSize: 16.0.sp),
+                                              style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryFont, fontSize: 16.0.sp),
                                             ),
                                           ),
                                         ),
                                       ),
-                                      !cWebAudio.isYesNoBool.value ||
-                                              cSpeech.isYesNoDetect.value
+                                      !cWebAudio.isYesNoBool.value || cSpeech.isYesNoDetect.value
                                           ? Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 15.0),
+                                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   YesNoWidget(
                                                     ans: 'SI',
@@ -139,111 +113,53 @@ class _MainViewState extends State<MainView> {
                                                 ],
                                               ),
                                             )
-                                          : responseDone.value == true &&
-                                                  showWaiting.value
+                                          : responseDone.value == true && showWaiting.value
                                               ? Container(
                                                   height: 55.h,
                                                   width: 98.w,
                                                   child: Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
+                                                    child: CircularProgressIndicator(),
                                                   ),
                                                 )
                                               // : Text('show four widgets')
                                               : Container(
                                                   height: 55.h,
                                                   width: 98.w,
-                                                  child:
-                                                      cDialogflow.subDataMapList[
-                                                                      initIndex
-                                                                          .value]
-                                                                  [
-                                                                  0]['label'] ==
-                                                              ''
-                                                          ? SizedBox()
-                                                          : Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceEvenly,
-                                                              children: [
-                                                                AnswerCard(
-                                                                  ans: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][0]['label'],
-                                                                  icon: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][0]['url'],
-                                                                  iconColor:
-                                                                      Colors
-                                                                          .blue,
-                                                                  screenWidth: Get
-                                                                          .size
-                                                                          .width *
-                                                                      0.81,
-                                                                  screenHeight:
-                                                                      screenHeight,
-                                                                ),
-                                                                AnswerCard(
-                                                                  ans: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][1]['label'],
-                                                                  icon: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][1]['url'],
-                                                                  iconColor:
-                                                                      Colors
-                                                                          .blue,
-                                                                  screenWidth: Get
-                                                                          .size
-                                                                          .width *
-                                                                      0.81,
-                                                                  screenHeight:
-                                                                      screenHeight,
-                                                                ),
-                                                                AnswerCard(
-                                                                  ans: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][2]['label'],
-                                                                  icon: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][2]['url'],
-                                                                  iconColor:
-                                                                      Colors
-                                                                          .blue,
-                                                                  screenWidth: Get
-                                                                          .size
-                                                                          .width *
-                                                                      0.81,
-                                                                  screenHeight:
-                                                                      screenHeight,
-                                                                ),
-                                                                AnswerCard(
-                                                                  ans: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][3]['label'],
-                                                                  icon: cDialogflow
-                                                                          .subDataMapList[
-                                                                      initIndex
-                                                                          .value][3]['url'],
-                                                                  iconColor:
-                                                                      Colors
-                                                                          .blue,
-                                                                  screenWidth: Get
-                                                                          .size
-                                                                          .width *
-                                                                      0.81,
-                                                                  screenHeight:
-                                                                      screenHeight,
-                                                                ),
-                                                              ],
+                                                  child: cDialogflow.subDataMapList[initIndex.value][0]['label'] == ''
+                                                      ? SizedBox()
+                                                      : Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            AnswerCard(
+                                                              ans: cDialogflow.subDataMapList[initIndex.value][0]['label'],
+                                                              icon: cDialogflow.subDataMapList[initIndex.value][0]['url'],
+                                                              iconColor: Colors.blue,
+                                                              screenWidth: Get.size.width * 0.81,
+                                                              screenHeight: screenHeight,
                                                             ),
+                                                            AnswerCard(
+                                                              ans: cDialogflow.subDataMapList[initIndex.value][1]['label'],
+                                                              icon: cDialogflow.subDataMapList[initIndex.value][1]['url'],
+                                                              iconColor: Colors.blue,
+                                                              screenWidth: Get.size.width * 0.81,
+                                                              screenHeight: screenHeight,
+                                                            ),
+                                                            AnswerCard(
+                                                              ans: cDialogflow.subDataMapList[initIndex.value][2]['label'],
+                                                              icon: cDialogflow.subDataMapList[initIndex.value][2]['url'],
+                                                              iconColor: Colors.blue,
+                                                              screenWidth: Get.size.width * 0.81,
+                                                              screenHeight: screenHeight,
+                                                            ),
+                                                            AnswerCard(
+                                                              ans: cDialogflow.subDataMapList[initIndex.value][3]['label'],
+                                                              icon: cDialogflow.subDataMapList[initIndex.value][3]['url'],
+                                                              iconColor: Colors.blue,
+                                                              screenWidth: Get.size.width * 0.81,
+                                                              screenHeight: screenHeight,
+                                                            ),
+                                                          ],
+                                                        ),
                                                 ),
                                     ],
                                   ),
@@ -258,9 +174,8 @@ class _MainViewState extends State<MainView> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          'Toca el botón verde para hacer una pregunta',
-                          style:
-                              TextStyle(color: kPrimaryFont, fontSize: 17.0.sp),
+                          'Toca el micrófono y haz una pregunta',
+                          style: TextStyle(color: kPrimaryFont, fontSize: 17.0.sp),
                         ),
                       ),
                     ),
@@ -276,9 +191,7 @@ class _MainViewState extends State<MainView> {
                       LayoutBuilder(builder: (_, constraints) {
                         return Container(
                           height: 80, // 80
-                          width: cDialogflow.isButtonShowed.value
-                              ? 200
-                              : 130, // 130
+                          width: cDialogflow.isButtonShowed.value ? 200 : 130, // 130
                           decoration: BoxDecoration(
                             color: Color(0xFFBB86FC),
                             borderRadius: BorderRadius.only(
@@ -317,14 +230,17 @@ class _MainViewState extends State<MainView> {
                               child: kIsWeb
                                   ? FloatingActionButton(
                                       backgroundColor: Color(0xFF03DAC5),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         log('TApped WINDOWS ');
-                                        if (cWebAudioController
-                                            .isListening.value) {
+                                        if (cWebAudioController.isListening.value) {
                                           // does nothing
                                         } else {
                                           cWebAudioController.startListening();
-                                          AudioCache().play('start.mp3');
+                                          final uri = await AudioCache().load('start.mp3');
+
+                                          final player = AudioPlayer();
+                                          await player.play(DeviceFileSource(uri.path));
+
                                           initIndex.value = 0;
                                           cDialogflow.subDataMapList.clear();
 
@@ -345,16 +261,14 @@ class _MainViewState extends State<MainView> {
                                         }
                                       },
                                       child: Icon(
-                                        cWebAudioController.isListening.value
-                                            ? Icons.mic_rounded
-                                            : Icons.mic_none_rounded,
+                                        cWebAudioController.isListening.value ? Icons.mic_rounded : Icons.mic_none_rounded,
                                         size: 30,
                                         color: Colors.black,
                                       ),
                                     )
                                   : FloatingActionButton(
                                       backgroundColor: Color(0xFF03DAC5),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         log('TApped ');
 
                                         if (!cSpeech.recognizing.value) {
@@ -363,7 +277,10 @@ class _MainViewState extends State<MainView> {
                                           // ];
                                           initIndex.value = 0;
                                           cSpeech.streamingRecognize();
-                                          AudioCache().play('start.mp3');
+                                          final uri = await AudioCache().load('start.mp3');
+
+                                          final player = AudioPlayer();
+                                          await player.play(DeviceFileSource(uri.path));
                                           // isYesNo = cQuestions
                                           //     .isYesNo(cSpeech.text.value);
                                           // isYesNo == true
@@ -379,9 +296,7 @@ class _MainViewState extends State<MainView> {
                                         }
                                       },
                                       child: Icon(
-                                        cSpeech.recognizing.value
-                                            ? Icons.mic_rounded
-                                            : Icons.mic_none_rounded,
+                                        cSpeech.recognizing.value ? Icons.mic_rounded : Icons.mic_none_rounded,
                                         size: 30,
                                         color: Colors.black,
                                       ),
@@ -399,21 +314,17 @@ class _MainViewState extends State<MainView> {
                             width: 120.0,
                             child: FittedBox(
                               child: FloatingActionButton(
-                                backgroundColor: Color(0xFF00a693),
+                                backgroundColor: kOTTAAOrangeNew,
                                 onPressed: () {
                                   log('Pressed More Button');
                                   // log('Next Length : ${cDialogflow.subDataMapList[initIndex.value + 1].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value + 1]}');
                                   // log('Current Length : ${cDialogflow.subDataMapList[initIndex.value].length} + DATA : ${cDialogflow.subDataMapList[initIndex.value]}');
                                   log('Current Index : ${initIndex.value}');
 
-                                  if (initIndex.value + 1 ==
-                                      cDialogflow.subDataMapList.length) {
+                                  if (initIndex.value + 1 == cDialogflow.subDataMapList.length) {
                                     log('IF FIRST CALLED');
                                     initIndex.value = 0;
-                                  } else if (cDialogflow
-                                          .subDataMapList[initIndex.value + 1]
-                                          .length ==
-                                      4) {
+                                  } else if (cDialogflow.subDataMapList[initIndex.value + 1].length == 4) {
                                     log('IF SELECTED');
                                     initIndex.value++;
                                   } else {
@@ -424,7 +335,7 @@ class _MainViewState extends State<MainView> {
                                 child: Icon(
                                   Icons.add,
                                   size: 20.sp,
-                                  color: addButtonClr,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),
@@ -437,7 +348,7 @@ class _MainViewState extends State<MainView> {
                 ),
               ),
               Positioned(
-                bottom: 0,
+                bottom: 10,
                 right: 16,
                 child: Row(
                   children: [
