@@ -51,20 +51,15 @@ class WebAudioController extends GetxController {
     print('Started listening');
     lastWords.value = '';
     lastError.value = '';
-    speech.listen(
-        onResult: resultListener,
-        listenFor: Duration(seconds: 4),
-        pauseFor: Duration(seconds: 4),
-        partialResults: true,
-        localeId: 'es_AR',
-        onSoundLevelChange: soundLevelListener,
-        cancelOnError: true,
-        onDevice: true,
-        listenMode: ListenMode.deviceDefault);
+    speech.listen(onResult: resultListener, listenFor: Duration(seconds: 4), pauseFor: Duration(seconds: 4), partialResults: true, localeId: 'es_AR', onSoundLevelChange: soundLevelListener, cancelOnError: true, onDevice: true, listenMode: ListenMode.deviceDefault);
   }
 
-  void stopListening() {
-    AudioCache().play('done.mp3');
+  void stopListening() async {
+    final uri = await AudioCache().load('done.mp3');
+
+    final player = AudioPlayer();
+    await player.play(DeviceFileSource(uri.path));
+    player.dispose();
     _logEvent('stop');
     speech.stop();
     isListening.value = false;
@@ -78,13 +73,15 @@ class WebAudioController extends GetxController {
   }
 
   RxBool isYesNoBool = true.obs;
-  void resultListener(SpeechRecognitionResult result) {
-    print(
-        'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
+  void resultListener(SpeechRecognitionResult result) async {
+    print('Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
     lastWords.value = '${result.recognizedWords}';
     if (result.finalResult) {
       // audioPlayer.play('done.mp3');
-      AudioPlayer().play('done.mp3', isLocal: true);
+      final uri = await AudioCache().load('done.mp3');
+
+      final player = AudioPlayer();
+      await player.play(DeviceFileSource(uri.path));
 
       stopListening();
       isListening.value = false;
@@ -108,14 +105,12 @@ class WebAudioController extends GetxController {
   }
 
   void errorListener(SpeechRecognitionError error) {
-    _logEvent(
-        'Received error status: $error, listening: ${speech.isListening}');
+    _logEvent('Received error status: $error, listening: ${speech.isListening}');
     lastError.value = '${error.errorMsg} - ${error.permanent}';
   }
 
   void statusListener(String status) {
-    _logEvent(
-        'Received listener status: $status, listening: ${speech.isListening}');
+    _logEvent('Received listener status: $status, listening: ${speech.isListening}');
 
     lastStatus.value = '$status';
   }
