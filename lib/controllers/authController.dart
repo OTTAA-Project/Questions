@@ -30,6 +30,7 @@ class AuthController extends GetxController {
 
       print('${currentUser.value}');
     } catch (e) {
+      print(e);
       Get.snackbar('Error', '${e.toString()}');
     }
     return currentUser.value != null;

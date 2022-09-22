@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/utils/constants.dart';
 import 'package:questions_by_ottaa/views/main_view.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AuthView extends StatelessWidget {
   AuthView({Key? key}) : super(key: key);
@@ -17,6 +16,7 @@ class AuthView extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: kPrimaryBG,
       body: SizedBox.fromSize(
         size: size,
         child: Column(
@@ -84,6 +84,7 @@ class AuthView extends StatelessWidget {
                       width: 250,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.white10,
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       child: Row(
