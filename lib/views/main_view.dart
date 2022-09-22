@@ -462,6 +462,7 @@ class AnswerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PictoWidget(
+      colorNumber: 4,
       text: cTTS.isCustomSubtitle ? ans!.toUpperCase() : ans!.toLowerCase(),
       onTap: () {
         log('Tapped == Will speak the Answer when clicked using TTS');
