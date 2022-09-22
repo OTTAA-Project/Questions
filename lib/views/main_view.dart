@@ -6,6 +6,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:picto_widget/picto_widget.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
 import 'package:questions_by_ottaa/controllers/mainViewController.dart';
@@ -460,47 +461,16 @@ class AnswerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return PictoWidget(
+      colorNumber: 4,
+      text: cTTS.isCustomSubtitle ? ans!.toUpperCase() : ans!.toLowerCase(),
       onTap: () {
         log('Tapped == Will speak the Answer when clicked using TTS');
         cTTS.speak(ans!.toLowerCase());
       },
-      child: Container(
-        height: screenHeight! * 0.6,
-        width: screenWidth! * 0.28,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              height: (screenHeight! * 0.8) * 0.6,
-              width: (screenWidth! * 0.28) * 0.8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(width: 4, color: kBorderColor),
-              ),
-              child: LayoutBuilder(
-                builder: (_, constraints) {
-                  return Image.network(
-                    '${Uri.parse('${icon}')}',
-                    height: 40.h,
-                    width: 30.w,
-                  );
-                },
-              ),
-            ),
-            Container(
-              child: Text(
-                ans!.toUpperCase(),
-                style: TextStyle(fontSize: 15.sp),
-              ),
-            )
-          ],
-        ),
-      ),
+      height: screenHeight! * 0.6,
+      width: screenWidth! * 0.28,
+      imageUrl: icon!,
     );
   }
 }
