@@ -119,9 +119,7 @@ app.*.symbols
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
-/lib/app/data/models/grupos_model.g.dart
-/lib/app/data/models/pict_model.g.dart
-/lib/app/data/models/search_model.g.dart
+*.g.dart
 
 dotenv
 google-services.json
