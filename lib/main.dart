@@ -48,8 +48,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     log('MY APP INITSTATE ');
-    auth.isAlreadyLoggedIn();
-    log('${auth.isLoggedIn.value}');
     super.initState();
   }
 
