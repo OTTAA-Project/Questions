@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:questions_by_ottaa/application/common/constants.dart';
 import 'package:questions_by_ottaa/views/settings/language_page.dart';
 import 'package:questions_by_ottaa/views/settings/voice_and_subtitle_page.dart';
 

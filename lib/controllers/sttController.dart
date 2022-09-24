@@ -4,13 +4,13 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:google_speech/google_speech.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
-import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
+import 'package:questions_by_ottaa/application/services/YesNoDetector.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sound_stream/sound_stream.dart';
 
 class SttController extends GetxController {
   final RecorderStream _recorder = RecorderStream();
-  final qd = QuestionDetection();
+  final qd = YesNoDetector();
   final cDialogflow = Get.put(DialogflowController());
 
   RxBool recognizing = false.obs;
@@ -18,7 +18,6 @@ class SttController extends GetxController {
   RxString text = ''.obs;
   RxString errorString = ''.obs;
   StreamSubscription<List<int>>? _audioStreamSubscription;
-  BehaviorSubject<List<int>>? _audioStream;
   final audioPlayer = AudioCache();
 
   // final webPlayer = AudioPlayer();
@@ -115,12 +114,4 @@ class SttController extends GetxController {
     await _audioStream?.close();
     recognizing.value = false;
   }
-
-  RecognitionConfig _getConfig() => RecognitionConfig(
-        encoding: AudioEncoding.LINEAR16,
-        model: RecognitionModel.basic,
-        enableAutomaticPunctuation: true,
-        sampleRateHertz: 16000,
-        languageCode: 'es-AR',
-      );
 }

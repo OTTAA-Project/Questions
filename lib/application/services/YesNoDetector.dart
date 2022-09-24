@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'package:diacritic/diacritic.dart';
+import 'package:questions_by_ottaa/core/services/questions_service.dart';
 
-class QuestionDetection {
+class YesNoDetector extends QuestionsService {
   String question = '';
   String language = 'es';
-  QuestionDetection() {
+  YesNoDetector() {
     log('===========QuestionDetection Agent Started');
   }
-
+  @override
   bool isYesNo(String question) {
     question = question.toLowerCase();
     switch (language) {
@@ -17,22 +18,7 @@ class QuestionDetection {
 
           int i = question.indexOf(' ');
           if (i != -1) question = question.substring(0, i);
-
-          final answer = question.contains('podes') ||
-              question.contains('puedes') ||
-              question.contains('tenes') ||
-              question.contains('conoces') ||
-              question.contains('queres') ||
-              question.contains('quieres') ||
-              question.contains('vas') ||
-              question.contains('ya') ||
-              question.contains('tienes') ||
-              question.contains('tomaste') ||
-              question.contains('es') ||
-              question.contains('lo') ||
-              question.contains('hace') ||
-              question.contains('somos') ||
-              question.contains('sos');
+          final answer = question.contains('podes') || question.contains('puedes') || question.contains('tenes') || question.contains('conoces') || question.contains('queres') || question.contains('quieres') || question.contains('vas') || question.contains('ya') || question.contains('tienes') || question.contains('tomaste') || question.contains('es') || question.contains('lo') || question.contains('hace') || question.contains('somos') || question.contains('sos'); //TODO: refactor this
           return answer;
         }
 

@@ -13,8 +13,8 @@ import 'package:questions_by_ottaa/controllers/mainViewController.dart';
 import 'package:questions_by_ottaa/controllers/sttController.dart';
 import 'package:questions_by_ottaa/controllers/ttsController.dart';
 import 'package:questions_by_ottaa/controllers/webAudioController.dart';
-import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:questions_by_ottaa/application/services/YesNoDetector.dart';
+import 'package:questions_by_ottaa/application/common/constants.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/widgets/drawer_widget.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -29,7 +29,7 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final mainController = Get.put(MainViewController());
   final cAuth = Get.put(AuthController());
-  final cQuestions = Get.put(QuestionDetection());
+  final cQuestions = Get.put(YesNoDetector());
   final cSpeech = Get.put(SttController());
   final cWebAudio = Get.put(WebAudioController());
   final cDialogflow = Get.put(DialogflowController());

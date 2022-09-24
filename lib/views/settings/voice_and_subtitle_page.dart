@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:questions_by_ottaa/application/common/constants.dart';
 
 import 'local_widgets/build_app_bar.dart';
 import 'settings_controller.dart';
@@ -49,8 +49,7 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                     //todo: set value
                     _.ttsController.languaje = newValue;
                   },
-                  items: _.ttsController.availableTTS
-                      .map<DropdownMenuItem<String>>((value) {
+                  items: _.ttsController.availableTTS.map<DropdownMenuItem<String>>((value) {
                     return DropdownMenuItem<String>(
                       value: value.toString(),
                       child: Text(value.toString()),
@@ -76,9 +75,7 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                     _.toggleIsCustomTTSEnable(value);
                   },
                   title: Text('Enable custom TTS'),
-                  subtitle: _.ttsController.isCustomTTSEnable
-                      ? Text('ON')
-                      : Text('OFF'),
+                  subtitle: _.ttsController.isCustomTTSEnable ? Text('ON') : Text('OFF'),
                 ),
                 Divider(),
                 ListTile(
@@ -88,9 +85,7 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                   enabled: false,
                 ),
                 Slider(
-                  activeColor: _.ttsController.isCustomTTSEnable
-                      ? kColorAppbar
-                      : Colors.grey,
+                  activeColor: _.ttsController.isCustomTTSEnable ? kColorAppbar : Colors.grey,
                   inactiveColor: Colors.grey,
                   value: _.ttsController.rate,
                   min: 0.0,
@@ -109,9 +104,7 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                   enabled: false,
                 ),
                 Slider(
-                  activeColor: _.ttsController.isCustomTTSEnable
-                      ? kColorAppbar
-                      : Colors.grey,
+                  activeColor: _.ttsController.isCustomTTSEnable ? kColorAppbar : Colors.grey,
                   inactiveColor: Colors.grey,
                   value: _.ttsController.pitch,
                   min: 0.0,
@@ -136,9 +129,7 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                 SwitchListTile(
                   activeColor: kColorAppbar,
                   title: Text('Customized subtitle'),
-                  subtitle: _.ttsController.isCustomSubtitle
-                      ? Text('ON')
-                      : Text('OFF'),
+                  subtitle: _.ttsController.isCustomSubtitle ? Text('ON') : Text('OFF'),
                   onChanged: (bool value) {
                     _.toggleIsCustomSubtitle(value);
                   },
@@ -152,9 +143,7 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                   enabled: false,
                 ),
                 Slider(
-                  activeColor: _.ttsController.isCustomSubtitle
-                      ? kColorAppbar
-                      : Colors.grey,
+                  activeColor: _.ttsController.isCustomSubtitle ? kColorAppbar : Colors.grey,
                   inactiveColor: Colors.grey,
                   value: _.ttsController.subtitleSize.toDouble(),
                   min: 1.0,
@@ -162,20 +151,16 @@ class VoiceAndSubtitlesPage extends StatelessWidget {
                   divisions: 3,
                   label: _.ttsController.subtitleSize.toString(),
                   onChanged: (double value) {
-                    if (_.ttsController.isCustomSubtitle)
-                      _.setSubtitleSize(value.toInt());
+                    if (_.ttsController.isCustomSubtitle) _.setSubtitleSize(value.toInt());
                   },
                 ),
                 Divider(),
                 SwitchListTile(
-                  activeColor: _.ttsController.isCustomSubtitle
-                      ? kColorAppbar
-                      : Colors.grey,
+                  activeColor: _.ttsController.isCustomSubtitle ? kColorAppbar : Colors.grey,
                   title: Text('Uppercase'),
                   subtitle: Text('It allows uppercase subtitles.'),
                   onChanged: (bool value) {
-                    if (_.ttsController.isCustomSubtitle)
-                      _.toggleIsSubtitleUppercase(value);
+                    if (_.ttsController.isCustomSubtitle) _.toggleIsSubtitleUppercase(value);
                   },
                   value: _.ttsController.isSubtitleUppercase,
                 ),

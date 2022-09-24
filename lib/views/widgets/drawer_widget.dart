@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/authController.dart';
 import 'package:questions_by_ottaa/controllers/mainViewController.dart';
 import 'package:questions_by_ottaa/controllers/ttsController.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:questions_by_ottaa/application/common/constants.dart';
 import 'package:questions_by_ottaa/views/auth_view.dart';
 import 'package:questions_by_ottaa/views/settings/settings_controller.dart';
 import 'package:questions_by_ottaa/views/settings/settings_page.dart';
@@ -33,8 +33,7 @@ class DrawerWidget extends GetView<MainViewController> {
           ),
           child: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
               child: Column(
                 children: [
                   Container(
@@ -64,8 +63,7 @@ class DrawerWidget extends GetView<MainViewController> {
                     height: verticalSize * 0.01,
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalSize * 0.01),
+                    padding: EdgeInsets.symmetric(horizontal: horizontalSize * 0.01),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -88,8 +86,7 @@ class DrawerWidget extends GetView<MainViewController> {
                     // thickness: 0.0,
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalSize * 0.01),
+                    padding: EdgeInsets.symmetric(horizontal: horizontalSize * 0.01),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -120,8 +117,7 @@ class DrawerWidget extends GetView<MainViewController> {
                     // thickness: 0.0,
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalSize * 0.01),
+                    padding: EdgeInsets.symmetric(horizontal: horizontalSize * 0.01),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [

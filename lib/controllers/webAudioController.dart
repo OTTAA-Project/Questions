@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
-import 'package:questions_by_ottaa/services.dart/YesNoDetection.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:questions_by_ottaa/application/services/YesNoDetector.dart';
+import 'package:questions_by_ottaa/application/common/constants.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -23,7 +23,7 @@ class WebAudioController extends GetxController {
   RxBool isListening = false.obs;
 
   final SpeechToText speech = SpeechToText();
-  final cQuestions = Get.put(QuestionDetection());
+  final cQuestions = Get.put(YesNoDetector());
   final cDialogflow = Get.put(DialogflowController());
   @override
   void onInit() {

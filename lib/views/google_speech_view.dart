@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
 import 'package:questions_by_ottaa/controllers/sttController.dart';
-import 'package:questions_by_ottaa/utils/constants.dart';
+import 'package:questions_by_ottaa/application/common/constants.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class GoogleSpeechView extends StatelessWidget {
@@ -20,9 +20,7 @@ class GoogleSpeechView extends StatelessWidget {
       child: Align(
         alignment: Alignment.center,
         child: Container(
-          decoration: BoxDecoration(
-              color: Color(0xFF202125),
-              borderRadius: BorderRadius.circular(12.0)),
+          decoration: BoxDecoration(color: Color(0xFF202125), borderRadius: BorderRadius.circular(12.0)),
           width: 50.w,
           height: 80.h,
           child: Column(
@@ -57,17 +55,13 @@ class GoogleSpeechView extends StatelessWidget {
                               log('TApped ');
                               if (!cSpeech.recognizing.value) {
                                 cSpeech.streamingRecognize();
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => GoogleSpeechView());
+                                showDialog(context: context, builder: (context) => GoogleSpeechView());
                               } else {
                                 cSpeech.stopRecording();
                               }
                             },
                             child: Icon(
-                              cSpeech.recognizing.value
-                                  ? Icons.mic_rounded
-                                  : Icons.mic_none_rounded,
+                              cSpeech.recognizing.value ? Icons.mic_rounded : Icons.mic_none_rounded,
                               size: 22.sp,
                               color: Colors.black,
                             ),
@@ -98,13 +92,10 @@ class GoogleSpeechView extends StatelessWidget {
                     color: kColorAppbar,
                     onPressed: () {
                       cSpeech.stopRecording();
-                      cSpeech.text != ''
-                          ? cDialogflow.sendMessage(cSpeech.text.value)
-                          : null;
+                      cSpeech.text != '' ? cDialogflow.sendMessage(cSpeech.text.value) : null;
                       cSpeech.recognizeFinished.value ? Get.back() : null;
                     },
-                    child: Text(cSpeech.recognizing.value ? 'Stop' : 'Retry',
-                        style: TextStyle(color: Colors.white)),
+                    child: Text(cSpeech.recognizing.value ? 'Stop' : 'Retry', style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ),
