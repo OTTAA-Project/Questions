@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_speech/google_speech.dart';
 import 'package:questions_by_ottaa/controllers/dialogflowController.dart';
@@ -48,9 +49,9 @@ class SttController extends GetxController {
 
     await _recorder.start();
     recognizing.value = true;
-    
+
     final clientX59 = dotenv.env['APP_ID'] ?? 'add Proper Values';
-    
+
     final ServiceAccount serviceAccount = ServiceAccount.fromString({
       "type": "service_account",
       "project_id": dotenv.env['PROJECT_ID'] ?? 'add Proper Values',

@@ -19,8 +19,8 @@ class SplashScreenController extends GetxController {
 
   @override
   void onInit() async {
-    await _authController.isAlreadyLoggedIn();
-    if (_authController.isLoggedIn.value) {
+    await _authController.isAlreadyLoggedin();
+    if (_authController.isLoggedin.value) {
       await loggedIn();
     } else {}
     super.onInit();
