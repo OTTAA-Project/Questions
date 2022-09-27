@@ -9,7 +9,7 @@ import 'package:questions_by_ottaa/core/repository/language_repository.dart';
 import 'package:quiver/iterables.dart';
 
 class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
-  final dref = FirebaseDatabase.instance.ref('Pictos/es');
+  final dref = FirebaseDatabase.instance.ref('Pictos/es'); //! Refactor wihtout
 
   late DialogFlowtter dialogFlowtter;
 
@@ -24,8 +24,6 @@ class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
       {'label': '', 'url': ''}
     ]
   ];
-
-  final _random = math.Random();
 
   final List<String> defaultFallback = [
     '¿Cómo dijiste?',
@@ -42,7 +40,9 @@ class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
   void dispose() {
     try {
       dialogFlowtter.dispose();
-    } catch (_) {}
+    } catch (_) {
+      print('XDXXDXDDXDXD');
+    }
 
     super.dispose();
   }
@@ -71,7 +71,7 @@ class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
 
     DatabaseEvent db = await dref.once();
 
-    await Future.wait(firebaseIdentifiers.map((identifier) async {
+    for (var identifier in firebaseIdentifiers) {
       if (db.snapshot.child(identifier).child('nombre').value != null) {
         dataMapList.add({
           'key': db.snapshot.child(identifier).key.toString(),
@@ -86,7 +86,7 @@ class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
           {'label': '', 'url': ''}
         ];
       }
-    }));
+    }
 
     subDataMapList = partition(dataMapList, 4).toList();
 
@@ -106,18 +106,6 @@ class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
         ],
       ];
     }
-
-    // isButtonShowed.value = subDataMapList.length > 0 && subDataMapList[1].length == 4;
-
-    // if (dataMapList[0]['label'] == null.toString()) {
-    //   Get.snackbar('Try Again', 'No Data Found', backgroundColor: Colors.white);
-    // } else {
-    //   responseDone.value = true;
-
-    //   showWaiting.value = false;
-    // }
-    // print('DATA LASTLY : $subDataMapList');
-    // responseDone.value = false;
   }
 
   @override
@@ -128,7 +116,7 @@ class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
     final String clientEmail = dotenv.env['CLIENT_EMAIL'] ?? 'add Proper Values';
     final String clientId = dotenv.env['CLIENT_ID'] ?? 'add Proper Values';
     final String clientX509CertUrl = dotenv.env['CLIENT_X509_CERT_URL'] ?? 'add Proper Values';
-    dialogFlowtter = await DialogFlowtter(
+    dialogFlowtter = DialogFlowtter(
       credentials: DialogAuthCredentials.fromJson({
         "type": "service_account",
         "project_id": projectId,
@@ -160,6 +148,8 @@ class DialogFlowProvider extends ChangeNotifier implements LanguageRepository {
       firebaseIdentifiers.add(str);
     }
     await getAll();
+
+    notifyListeners();
   }
 }
 

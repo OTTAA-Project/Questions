@@ -15,10 +15,20 @@ import 'package:sound_stream/sound_stream.dart';
 
 class STTProvider extends ChangeNotifier implements SttRepository {
   final RecorderStream _recorder = RecorderStream();
+
   final QuestionsService questionsService;
   final LanguageRepository languageRepository;
-  bool recognizing = false, recognizeFinished = false, result = true, isYeNo = false;
-  String text = '', errorString = '';
+
+  @override
+  String text = '';
+
+  @override
+  String error = '';
+
+  @override
+  bool isRecognizing = false;
+  @override
+  bool isQuestion = false;
 
   STTProvider({
     required this.questionsService,
@@ -31,7 +41,8 @@ class STTProvider extends ChangeNotifier implements SttRepository {
   Future<void> startRecording() async {
     text = '';
     await _recorder.start();
-    recognizing = true;
+    isRecognizing = true;
+    notifyListeners();
 
     final clientX59 = dotenv.env['APP_ID'] ?? 'add Proper Values';
 
@@ -60,35 +71,29 @@ class STTProvider extends ChangeNotifier implements SttRepository {
 
         if (data.results.first.isFinal) {
           responseText += '\n$currentText';
-
           text = responseText;
-          recognizeFinished = true;
         } else {
           text = '$responseText\n$currentText';
-          recognizeFinished = true;
         }
+        isRecognizing = false;
       },
       cancelOnError: true,
       onError: (e) {
-        errorString = e.toString();
+        error = e.toString();
       },
       onDone: () async {
-        recognizing = false;
+        isRecognizing = false;
         final uri = await AudioCache().load('done.mp3');
 
         final player = AudioPlayer();
         await player.play(DeviceFileSource(uri.path));
+        isQuestion = questionsService.isYesNo(text);
 
-        result = questionsService.isYesNo(text);
-        isYeNo = result;
-
-        if (isYeNo) {
-          await stopRecording();
-        } else {
+        if (!isQuestion) {
           await languageRepository.save(text);
           await languageRepository.getAll();
-          await stopRecording();
         }
+        await stopRecording();
       },
     );
   }
@@ -96,7 +101,8 @@ class STTProvider extends ChangeNotifier implements SttRepository {
   @override
   Future<void> stopRecording() async {
     await _recorder.stop();
-    recognizing = false;
+    isRecognizing = false;
+    notifyListeners();
   }
 
   RecognitionConfig _getConfig() => RecognitionConfig(
@@ -110,7 +116,11 @@ class STTProvider extends ChangeNotifier implements SttRepository {
 
 final sttProvider = ChangeNotifierProvider<STTProvider>((ref) {
   final questionsService = GetIt.I<QuestionsService>();
+
   final languageRepository = ref.watch<DialogFlowProvider>(dialogFlowProvider);
 
-  return STTProvider(questionsService: questionsService, languageRepository: languageRepository);
+  return STTProvider(
+    questionsService: questionsService,
+    languageRepository: languageRepository,
+  );
 });
