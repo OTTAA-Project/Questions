@@ -8,6 +8,11 @@ class YesNoDetector extends QuestionsService {
   YesNoDetector() {
     log('===========QuestionDetection Agent Started');
   }
+
+  setLanguage(String value){
+    language = value;
+  }
+
   @override
   bool isYesNo(String question) {
     question = question.toLowerCase();
