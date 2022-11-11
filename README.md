@@ -2,6 +2,7 @@
 
 # Welcome to Questions, a multimodal communicator where you ask questions orally and get answers with Pictos#
 
+[![Codemagic build status](https://api.codemagic.io/apps/6335e7660c4aeb132b0c52e9/6335e7660c4aeb132b0c52e8/status_badge.svg)](https://codemagic.io/apps/6335e7660c4aeb132b0c52e9/6335e7660c4aeb132b0c52e8/latest_build)
 
 ## Web Page
  * [Check our Web Page](https://ottaaproject.com)
