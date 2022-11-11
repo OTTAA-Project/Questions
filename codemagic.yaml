@@ -1,0 +1,68 @@
+# Automatically generated on 2022-11-11 UTC from https://codemagic.io/app/6335e7660c4aeb132b0c52e9/settings
+# Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
+
+workflows:
+  questions-master:
+    name: Questions master
+    max_build_duration: 30
+    environment:
+      groups:
+        - Questions
+      flutter: 3.3.2
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: master
+          include: true
+          source: true
+      tag_patterns:
+        - pattern: '*'
+          include: true
+    scripts:
+      - |
+        # set up key.properties
+        echo $FCI_KEYSTORE | base64 --decode > $FCI_KEYSTORE_PATH
+        cat >> "$FCI_BUILD_DIR/android/key.properties" <<EOF
+        storePassword=$FCI_KEYSTORE_PASSWORD
+        keyPassword=$FCI_KEY_PASSWORD
+        keyAlias=$FCI_KEY_ALIAS
+        storeFile=/tmp/keystore.keystore
+        EOF
+      - |
+        # set up local properties
+        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+      - |
+        echo $DOTENV1 | base64 --decode > $FCI_BUILD_DIR/dotenv
+
+        flutter pub get
+      - flutter packages pub get
+      - flutter config --enable-web
+      - flutter test
+      - echo $GOOGLE_SERVICES_JSON | base64 --decode > $FCI_BUILD_DIR/android/app/google-services.json
+      - flutter build appbundle --release
+      - |
+        # build web
+        flutter build web --release
+        cd build/web
+        7z a -r ../web.zip ./*
+      - firebase deploy --token "$FIREBASE_TOKEN"
+    artifacts:
+      - build/**/outputs/apk/**/*.apk
+      - build/**/outputs/bundle/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - build/web.zip
+      - '*.snap'
+      - build/windows/**/*.msix
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - hectoritr@hotmail.com
+      google_play:
+        credentials: Encrypted(Z0FBQUFBQmpib29KeHEyY2JlRDRlY2J1SW5TeEVySTA1V2Q2WXo1bTVSbGx2Nk11WlZxdy1oU1JESksyYUpmQ1ZDV2hZcUVlYlNabTJRcnlEMWJ0Tmt4cGc0eTlPeXNwYzJNVWRhWlVPOC1sOVBsTlVwMjZ4TXd6WFBkaWpCb0Z6OUJmYVJObFNnRGZHQlVoeWhxSzlNZ3gzX04xNkxEbVRydTJXdDg2b2hBQXJOT0V2Mkk4dWJyS1NIbG53V2lqNTNlQXRrNWMtT19yNHoybWNaMkpkQ0M2U2NOcFNuR3FhRDlfcjlRQVhTamhIZTRmOEtsRTZNQ0Y2cTFwOVRiaGNySXh5N2wwUE4xSDFBUFc5SURWV0RuRkgyNEdYOHdybVJ2anpYRlVBVHlWcWZscjhEZ2x0ajBFRnEwTHFYREhpNlJSZ0lJaldIVFZJRFgwekJiQUs3a19JOC01XzkzVEZMM1RPZEtkTXB6WHlUeTgyZmljejBjQzRjbzRocGR1ZGYwUUduQXVqUVRBNWJvVTBXa2VKXzZwT041Y2NnSmc2bUlfYmsyNHhONUNCT2o5bjRXYTQxN1ZhYUI0NWNzdzdVa090Nno5d3hDTU5fZFdpNVBTMFd5M3NqX0tJZUktU1JJa3ZBNndVbW9OOF96MkhRaTViTzltYzVEc1ItZTdtdVNNTTRoZUtsMThiLTlQa25pcTk3UjJpY0N5NC1pa0FBWXhCbDRuYmQ3MUdoZy1lYVFXUE5ibTVYQkhVZXI4bU85Vms4aEptbVJ5cVYwOS1iNzY2UEtic2g2ZEFEVXRfQkI3LUREU1pJY2l2aVBhdXhwcVFEMEZmSTl5M3dJYWVWWTl4VUFULXI5dDRycHptVDdZaVBuR2RqTHBNSmxjNzJWemxlZkRpTFBZUGp1UUpiZnR4ZHhodEJpMHBtQTE4bm5GZHJvVk1wSFlFMGRpeTcwXzFsSzZ0ZUVoU3EyVWtycnNZTkdwVXVGRzlrUy1ZSTRBSVdzbnYyck13WkFHaVRsMzhhMVpObTlmLUlNUWdVUEJtamtySUw1dHdhdXZDem95RmVzQWhOd1NFNEE5ZlhrWUpURVdxUVdiUzZUcXlqNWNnRXdqRE9aOFZhS1JWd2xzRjhuNURVN1JxSFdYYVY5TzFJMFJienY2U0tGN0VDVm9iTGxzaXNyMnZrQXJSMHhjVktlNWVfMUx3aFdVTEJnVDBla3lXTnEyVzB5ZlFNOUl4WnFfaG55YWhhWWt1SWNsUG1YV0ZvNjhlUm4zRmpRcm9rWS0wVnk1X0RqMGdRNXFka0VwSjJrWWJsRFJMZkxrVkRLTGJwb0VGNzhyOFdQY2NUa0I1d0VteEZRcE8xY0szUGlCUnZlZXB5N1ZuTzRVR29CRnhnWllXcFZkWkdNa25aXzVucG1iVlhsRldLMXdPMGFyUnYxYWhjNWtDdmIzWkQ3ZXNZYV9WWDhobHpfNV94VEpBWmNGTVZLaWdTbEQ5SlFtS3hhYUlqemtoZTdHRlhhaF9ER3JMaGNXNml5b2ZOWlBpWktEM2psWWhMZEthbldjUXVuR1gwanZQaGNqV3FiQjVvY0hVZGFKd3RkVWFEdjF6ZzdHa3lhUXRiczBnVUlGU3FJdzBKckZBNTU5VkhVdjJNcnlmX2dpNkw2dVQyQ3NFT19FY0ZCWHZ5Z1UzSVdqNGg5TmtVWHNNbWdwYi1BVkw3a201ZHhWVTFiQ1hjdXNza2ZtVjJrVGlfYVcwVFlVTmtxM2Q2dG5leV93cURTVjZ0ck1NbnNoT3d3TWxZX3ZRWDdiY18wTEJiSUxYTDlFUG9Ec2FTeGFsS3BDaDc5Y0xXbTRfelR3NFRXWFhHREZWYXpySDZpQmI2SGhGcWstdHRGSlJvSERjU2JOVHVTTE5EeV90a1c2c0FHZV9XeXJESkNRZ3BscVZEa25Bb0ExTnRQZ09DUnJFZmVOaFpsZXZJVEg5WU51azI0Y3NMd3RoQTJJdkpLem8ydDF4WC1peTU3WVNoQ0VXbkRqX015N2g5ZkppSTVnYk1ES3I0a2U1WFU5cWhzeDB4WGZjTWtYZXlITGpjOEdFdDdSSjJlWlFhSTBlUXpBN0xnOHNicFVMR1BXelhfQTN2RTAwdVJ4X2dsS1UtaGg2Rk9RTWxBcDJVZG5DOVJPeE54OGh4TkQ5N3lVdmxLdF9ZVGc0dFFjeFhScGRIQ3k0TUl5OENCU3BNWXB3TzVibHcxVy01cVFtVWg3amVSMjhPeXdodUk5Q2pHVkZBVW9oSTFFTE12S1ZldGZ6aXBiTFVibEN4SkdueHgyN2ppYXBvelZaS01HY3hxYlRqaGpidEgyV3Nvc0RJZ0FEc25qQnJGN3B2NEVPdjFobzdreW5JM2MtMGpEcVZvZzF0d0FRRnhsRXY5bjgzWkRDc1FwczhTYXFURHVuajE0MUpZamdIbE5DcDhyVXZ5YUZubTNDZGl6R1kxVjF1WTNMdVl6cXJyUEd5VXdPSmhYV2tGV3AySkJ6Wk12RTlWTGlwTy1RMUdobGM0RkVxc3gwQlBNTm9OT2pQc0JOYWJFWjFvUE9OMFRCclVmN3pMeTNzZ1FfelJ4aC1TUHoxbVA5MU5nV0tLZk5XM1prajNQM3ZaXzU4dXRIbC1UeXZxaDBETGJCcG5JUVJ5ZXpRRktXTl9mSFh4amFpTHVSdzV3eXVHOU5sR0FKMFpEVllzdl92dWRydlFxX1gzZGhkMjBhd0NjQkk5MEI3QzZJWFl4ODlQV1hubWZMNGhpQWhYVVpSRExKQzFmd3VwNGV0RWxlYl9fYm1tRDJLVWwzRXZoMDFEOXBwWHl3enBVV2kxdGlLREctT19kcGhueEd5ZkJValJNLU9FaW16dWRudkJ4VjVSVXphNTg5Yno3OEM5aFV4a0VOUXlKYmNBdjY3eXN0RW5XeVVnMEFSUWRfRDhMaFo4SXFWcDZsQTBNWWRSWG1acmF4bU0yWWlwYUU2U3ZqeVFodjJoRl80MnJrNnk4V3dhZWNDb0tsZmp3dWxBZVFBVWNJWi1tTjRHRUkxVjJQQmhZRy1aYzlJTEdBSllaWXVocnVsdUlIZldOaFZCYjA4TnFab0t5V0RoT3g1MWFMVkVDSXdQMTk2UlJXRGc0VTh0OHNyOE1nTWJ5cm5pU1U1YUlUMENaU0NUVWpYUzdXSVZoMmhTd0o5Q0tDLUExSmpyaVJIWjhFRGRBa2ppZHdwVVZRdDBURmdsdTlRVnZXSFdXck1BcTRRN1Y4WWRZVnhScHMwdm8wT0RoZzF6RWNob1hzb0d4X2NvU08ycnhvZVJlRktXZmZpdkZkelZpMEJwQlZPWW1pNE1raWlibFFEbnp4VVdDX3BFRVBhNnZ2YXZnV3NQcHktYllJLWdyUm13bGFzdFpCcUl2dVZwRk1JRDdNTGl2OEVKU2J5VlRzWEdWU1pQaDFyMU9oV2JtNW1jZTI0dk1yREFXZVlfRm82NlE0eHJoS3lKaUpEXzZYUnRmTjAzVkg1WS1UbUdkQnZoNFNyNFBmVUYxZThQeHRnMi1IUzZlSTBZR0w4aWxQSGx1MjB5RzhLWmYwZ2taOWNSWFJYaG5OOEh1eXl6X1k4aUViWE04VlRxWm9PNjhjNjdPejNLaTdfd3E2b1RDRWEtM2ZWb3lVLWlXamFLOThfUzFOcWlwNDZpWUNrU0JERXVmbkpvMWNSakxCSUJRVTAzbmpva2tSZGhfUllzS255OTFaMF9kQm8wODd2bEdlS0g0Zzg3eVB3dTc2ZThQalc5cjZBRDlpOFZuY3haeUVyWjJmR1FiVDZKazR4N3k4QUhwWUhXUF85YmhuM2k3V0xDQ0lSdmhlNEdKZXpZak5CaHhIQWhPZ1hVZXZ4c2MzVGJBTWtpM0JiOEI2aWVoTWJQRGUwUWt2c1ZvUVlwcnJBSnJVTlIxVnlYbkloSTVHaGxHMlkwMTA3TnFubHpQZG1wRk1oeFFKckFJN2tPWnQ0OHNlQ1RPbnJsZU5hZEl6MUprRnlPVGFkcG41SmlRblVpSjVzTFBsNElfa0Z2OWtiTGEtYXpmdWZjQWZ0SlZ3RDJla2hNWWZHa1RvUG9PemxjT0RDM3BuZVlYanRVN29UTGxkSG15SzZFVGwzQnZucEI0dk8wbFYwSmpuTjRUaVR6d2wyU3lUam1WaHBudzlxRXhmbzZxdVVidUx3T3RiZFp0Zjk1X3N4RzZuMDMxZEZDNXhoZHdlV1VzRDlwc1VhX204WVY5S0NCYzJZMWc5U2NPTV8tVXRrc0pqd29mZWdpZE1DTC1waGx3OUl3TXVQTTZjY2libzhqSUtqd0Q2RTVQMGp0NjNpcWJWa2lR)
+        track: internal
+        in_app_update_priority: 0
+
