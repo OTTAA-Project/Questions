@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -11,10 +11,14 @@ import 'package:questions_by_ottaa/application/providers/dialog_flow_provider.da
 import 'package:questions_by_ottaa/core/repository/language_repository.dart';
 import 'package:questions_by_ottaa/core/repository/stt_repository.dart';
 import 'package:questions_by_ottaa/core/services/questions_service.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:sound_stream/sound_stream.dart';
 
-class STTProvider extends ChangeNotifier implements SttRepository {
+class STTProvider extends SttRepository {
   final RecorderStream _recorder = RecorderStream();
+
+  StreamSubscription<List<int>>? _audioStreamSubscription;
+  BehaviorSubject<List<int>>? _audioStream;
 
   final QuestionsService questionsService;
   final LanguageRepository languageRepository;
@@ -39,31 +43,35 @@ class STTProvider extends ChangeNotifier implements SttRepository {
 
   @override
   Future<void> startRecording() async {
+    _audioStream = BehaviorSubject<List<int>>();
+    _audioStreamSubscription = _recorder.audioStream.listen((event) {
+      _audioStream!.add(event);
+    });
     text = '';
     await _recorder.start();
     isRecognizing = true;
     notifyListeners();
 
-    final clientX59 = dotenv.env['APP_ID'] ?? 'add Proper Values';
+    final String serviceAccountString = (await rootBundle.loadString('assets/service_account.json')).replaceAllMapped(
+      RegExp(r'("{(.*?)}")'),
+      (match) {
+        final String value = (match.group(0) ?? '').replaceAll(RegExp(r'"|{|}'), "");
+        return '"${(dotenv.env[value] ?? 'add Proper Values').toString()}"';
+      },
+    );
 
-    final ServiceAccount serviceAccount = ServiceAccount.fromString({
-      "type": "service_account",
-      "project_id": dotenv.env['PROJECT_ID'] ?? 'add Proper Values',
-      "private_key_id": dotenv.env['PRIVATE_KEY_ID_2'] ?? 'add Proper Values',
-      "private_key": dotenv.env['DIALOUGE_PRIVATE_KEY_2'] ?? 'add Proper Values',
-      "client_email": dotenv.env['CLIENT_EMAIL'] ?? 'add Proper Values',
-      "client_id": dotenv.env['CLIENT_ID'] ?? 'add Proper Values',
-      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-      "token_uri": "https://oauth2.googleapis.com/token",
-      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url": clientX59,
-    }.toString());
+    log(serviceAccountString);
+
+    final ServiceAccount serviceAccount = ServiceAccount.fromString(serviceAccountString);
 
     final speechToText = SpeechToText.viaServiceAccount(serviceAccount);
 
-    final responseStream = speechToText.streamingRecognize(StreamingRecognitionConfig(config: _getConfig(), interimResults: true), _recorder.audioStream);
+    final responseStream = speechToText.streamingRecognize(
+      StreamingRecognitionConfig(config: _getConfig(), singleUtterance: true, interimResults: true),
+      _audioStream!,
+    );
 
-    String responseText = '';
+    var responseText = '';
 
     responseStream.listen(
       (data) {
@@ -72,17 +80,22 @@ class STTProvider extends ChangeNotifier implements SttRepository {
         if (data.results.first.isFinal) {
           responseText += '\n$currentText';
           text = responseText;
+          isRecognizing = false;
         } else {
           text = '$responseText\n$currentText';
+          isRecognizing = false;
         }
-        isRecognizing = false;
+        notifyListeners();
       },
       cancelOnError: true,
       onError: (e) {
         error = e.toString();
+        notifyListeners();
       },
       onDone: () async {
+        print("DONE");
         isRecognizing = false;
+        notifyListeners();
         final uri = await AudioCache().load('done.mp3');
 
         final player = AudioPlayer();
@@ -91,7 +104,6 @@ class STTProvider extends ChangeNotifier implements SttRepository {
 
         if (!isQuestion) {
           await languageRepository.save(text);
-          await languageRepository.getAll();
         }
         await stopRecording();
       },
@@ -101,6 +113,8 @@ class STTProvider extends ChangeNotifier implements SttRepository {
   @override
   Future<void> stopRecording() async {
     await _recorder.stop();
+    await _audioStreamSubscription?.cancel();
+    await _audioStream?.close();
     isRecognizing = false;
     notifyListeners();
   }
@@ -111,10 +125,11 @@ class STTProvider extends ChangeNotifier implements SttRepository {
         enableAutomaticPunctuation: true,
         sampleRateHertz: 16000,
         languageCode: 'es-AR',
+        useEnhanced: true,
       );
 }
 
-final sttProvider = ChangeNotifierProvider<STTProvider>((ref) {
+final sttProvider = ChangeNotifierProvider<SttRepository>((ref) {
   final questionsService = GetIt.I<QuestionsService>();
 
   final languageRepository = ref.watch<DialogFlowProvider>(dialogFlowProvider);

@@ -12,7 +12,7 @@ class MicrophoneButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SttRepository stt;
+    final SttRepository stt;
 
     if (kIsWeb) {
       stt = ref.watch(webSTTProvider);
@@ -56,6 +56,7 @@ class MicrophoneButton extends ConsumerWidget {
 
                   final player = AudioPlayer();
                   await player.play(DeviceFileSource(uri.path));
+
                   await stt.startRecording();
                 } else {
                   await stt.stopRecording();

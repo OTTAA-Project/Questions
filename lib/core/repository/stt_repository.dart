@@ -1,4 +1,6 @@
-abstract class SttRepository {
+import 'package:flutter/widgets.dart';
+
+abstract class SttRepository extends ChangeNotifier {
   bool get isRecognizing;
   bool get isQuestion;
 
