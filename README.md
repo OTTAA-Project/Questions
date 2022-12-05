@@ -9,21 +9,13 @@
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
+With Questions you can answer verbal questions with Pictograms. Just press the "Mic" button on Questions to start listening and then answer using Pictograms. Questions
+AI will understand the question and give you possible answers automatically. 
 ## Getting started
 
 TODO: List prerequisites and provide or point to information on how to
 start using the package.
 
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
-```
 
 ## Contributing
 
@@ -52,7 +44,7 @@ In order to create a pull request is necessary
 
 ## Code of Conduct
 
-### OTTAA Project Open Source Code of Conduct
+### Questions Open Source Code of Conduct
 
 In order to work in the  OTTAA Project in a collaborative way and help our community grow we ask you to comply with the following code of conduct..
 
