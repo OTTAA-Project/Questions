@@ -21,7 +21,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       MessageDialog.show(
         context,
-        "ALERTA",
+        "Importante",
         "Tu período de prueba gratis comenzó, cuando este expire no tendrás más acceso a la herramienta. Para continuar utilizando la herramienta, deberas acceder a la versión Premium paga, contactate con nosotros a info@ottaaproject.com",
       );
     });
