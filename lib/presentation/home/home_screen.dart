@@ -5,13 +5,31 @@ import 'package:questions_by_ottaa/application/providers/providers.dart';
 import 'package:questions_by_ottaa/core/repository/stt_repository.dart';
 import 'package:questions_by_ottaa/presentation/home/ui/microphone_button.dart';
 import 'package:questions_by_ottaa/presentation/home/ui/pictos_result.dart';
+import 'package:questions_by_ottaa/presentation/ui/message_dialog.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class HomeScreen extends ConsumerWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      MessageDialog.show(
+        context,
+        "Importante",
+        "Tu período de prueba gratis comenzó, cuando este expire no tendrás más acceso a la herramienta. Para continuar utilizando la herramienta, deberas acceder a la versión Premium paga, contactate con nosotros a info@ottaaproject.com",
+      );
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final hProvider = ref.watch(homeProvider);
     final size = MediaQuery.of(context).size;
     final tts = ref.watch(ttsProvider);
