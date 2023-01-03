@@ -22,33 +22,41 @@ workflows:
         - pattern: '*'
           include: true
     scripts:
-      - |
-        # set up key.properties
-        echo $FCI_KEYSTORE | base64 --decode > $FCI_KEYSTORE_PATH
-        cat >> "$FCI_BUILD_DIR/android/key.properties" <<EOF
-        storePassword=$FCI_KEYSTORE_PASSWORD
-        keyPassword=$FCI_KEY_PASSWORD
-        keyAlias=$FCI_KEY_ALIAS
-        storeFile=/tmp/keystore.keystore
-        EOF
-      - |
-        # set up local properties
-        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
-      - |
-        echo $DOTENV1 | base64 --decode > $FCI_BUILD_DIR/dotenv
+      - name: Set up key.properties
+        script: |
+          echo $FCI_KEYSTORE | base64 --decode > $FCI_KEYSTORE_PATH
+          cat >> "$FCI_BUILD_DIR/android/key.properties" <<EOF
+          storePassword=$FCI_KEYSTORE_PASSWORD
+          keyPassword=$FCI_KEY_PASSWORD
+          keyAlias=$FCI_KEY_ALIAS
+          storeFile=/tmp/keystore.keystore
+          EOF
 
-        flutter pub get
-      - flutter packages pub get
-      - flutter config --enable-web
-      - flutter test
-      - echo $GOOGLE_SERVICES_JSON | base64 --decode > $FCI_BUILD_DIR/android/app/google-services.json
-      - flutter build appbundle --release
-      - |
-        # build web
-        flutter build web --release
-        cd build/web
-        7z a -r ../web.zip ./*
-      - firebase deploy --token "$FIREBASE_TOKEN_Q"
+      - name: Set up local.properties
+        script:
+          echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+
+      - name: Setting up the environment
+        script:
+          echo $DOTENV1 | base64 --decode > $FCI_BUILD_DIR/dotenv
+          flutter packages pub get
+          flutter config --enable-web
+          echo $GOOGLE_SERVICES_JSON | base64 --decode > $FCI_BUILD_DIR/android/app/google-services.json
+
+      - name: Testing
+        script:
+          flutter test
+
+      - name: Building
+        script: |
+          flutter build appbundle --release --build-name=1.0.$(($BUILD_NUMBER + 1)) --build-number=$(($BUILD_NUMBER + 1))
+          flutter build web --release
+          cd build/web
+          7z a -r ../web.zip ./*
+
+      - name: Deploy to web
+        script:
+          firebase deploy --token "$FIREBASE_TOKEN_Q"
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
