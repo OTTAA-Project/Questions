@@ -37,7 +37,7 @@ workflows:
           echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
 
       - name: Setting up the environment
-        script:
+        script: |
           echo $DOTENV1 | base64 --decode > $FCI_BUILD_DIR/dotenv
           flutter packages pub get
           flutter config --enable-web
@@ -56,7 +56,7 @@ workflows:
 
       - name: Deploy to web
         script:
-          firebase deploy --token "$FIREBASE_TOKEN_Q"
+          firebase deploy --token "$FIREBASE_TOKEN_QUESTION"
     artifacts:
       - build/**/outputs/apk/**/*.apk
       - build/**/outputs/bundle/**/*.aab
