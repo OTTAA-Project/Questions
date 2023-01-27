@@ -21,7 +21,7 @@ class MicrophoneButton extends ConsumerWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: const BoxDecoration(
         color: Color(0xFFBB86FC),
         borderRadius: BorderRadius.only(
@@ -37,7 +37,7 @@ class MicrophoneButton extends ConsumerWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           const Icon(Icons.menu, color: kBackgroundColor, size: 40),
-          const SizedBox(width: 10),
+          const SizedBox(width: 5),
           AvatarGlow(
             glowColor: Colors.white,
             endRadius: 40.0,
