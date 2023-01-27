@@ -11,7 +11,8 @@ class PictosResult extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dialogFlow = ref.watch(dialogFlowProvider);
-    if (dialogFlow.subDataMapList[0][0]['label']!.isEmpty) return const SizedBox();
+    if (dialogFlow.subDataMapList[0][0]['label']!.isEmpty)
+      return const SizedBox();
 
     SttRepository stt;
 
@@ -37,6 +38,9 @@ class PictosResult extends ConsumerWidget {
             imageUrl: dialogFlow.subDataMapList[0][0]['url']!,
           ),
         ),
+        const SizedBox(
+          width: 20,
+        ),
         Expanded(
           child: PictoWidget(
             text: dialogFlow.subDataMapList[0][1]['label']!,
@@ -44,12 +48,18 @@ class PictosResult extends ConsumerWidget {
             imageUrl: dialogFlow.subDataMapList[0][1]['url']!,
           ),
         ),
+        const SizedBox(
+          width: 20,
+        ),
         Expanded(
           child: PictoWidget(
             text: dialogFlow.subDataMapList[0][2]['label']!,
             onTap: () {},
             imageUrl: dialogFlow.subDataMapList[0][2]['url']!,
           ),
+        ),
+        const SizedBox(
+          width: 20,
         ),
         Expanded(
           child: PictoWidget(
